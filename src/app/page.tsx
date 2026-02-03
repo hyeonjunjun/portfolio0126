@@ -48,9 +48,9 @@ export default function Home() {
     return () => unsubscribe();
   }, [rawIndex]);
 
-  // Work Section Fade Logic
-  const workOpacity = useTransform(scrollYProgress, [0, 0.05, 0.9, 1], [0, 1, 1, 0]);
-  const workScale = useTransform(scrollYProgress, [0, 0.05, 0.9, 1], [0.95, 1, 1, 0.95]);
+  // Work Section Fade Logic - Anchored at start and end
+  const workOpacity = useTransform(scrollYProgress, [0, 0.02, 0.98, 1], [1, 1, 1, 1]);
+  const workScale = useTransform(scrollYProgress, [0, 0.05, 0.95, 1], [1, 1, 1, 1]);
 
   // Body Scroll Lock when Project Open
   useEffect(() => {
