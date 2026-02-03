@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import Magnetic from "./Magnetic";
 
 const PROJECTS_LEFT = [
     { id: "01", client: "SIFT MOBILE", type: "PRODUCT" },
@@ -58,44 +59,50 @@ export default function HeroSection() {
     };
 
     return (
-        <section className="relative w-full h-screen flex flex-col overflow-hidden text-[#EDEDED]">
+        <section className="relative w-full h-screen flex flex-col overflow-hidden text-[#FEF3C7]">
 
             {/* GLOBAL FIXED NAV OVERLAY (Always Visible) */}
-            <div className="fixed top-8 left-12 z-50">
+            <div className="fixed top-8 left-12 z-50 px-4 py-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-sm">
                 <Link href="/" className="font-sans font-bold text-sm uppercase tracking-wide leading-tight hover:opacity-50 transition-opacity block">
                     HKJ<br />STUDIO
                 </Link>
             </div>
 
-            <div className="fixed top-8 right-12 z-50 flex gap-8 font-sans font-bold text-[10px] uppercase tracking-wide">
-                <Link href="#work" className="hover:opacity-50 transition-opacity">WORK</Link>
-                <Link href="#sandbox" className="hover:opacity-50 transition-opacity">SANDBOX</Link>
-                <Link href="#contact" className="hover:opacity-50 transition-opacity">CONTACT</Link>
+            <div className="fixed top-8 right-12 z-50 flex gap-8 font-sans font-bold text-[10px] uppercase tracking-wide px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-sm">
+                <Magnetic strength={0.3}>
+                    <Link href="#work" className="hover:text-[#FDB9C8] transition-colors">WORK</Link>
+                </Magnetic>
+                <Magnetic strength={0.3}>
+                    <Link href="#sandbox" className="hover:text-[#FDB9C8] transition-colors">SANDBOX</Link>
+                </Magnetic>
+                <Magnetic strength={0.3}>
+                    <Link href="#contact" className="hover:text-[#FDB9C8] transition-colors">CONTACT</Link>
+                </Magnetic>
             </div>
 
-            <div className="fixed bottom-8 left-12 z-50 font-mono text-[10px] text-[#525252] uppercase">
+            <div className="fixed bottom-8 left-12 z-50 font-mono text-[10px] text-[#A8A29E] uppercase px-3 py-1 bg-white/5 backdrop-blur-sm border border-white/5 whitespace-nowrap">
                 [SEOUL, KR]
             </div>
-            <div className="fixed bottom-8 right-12 z-50 font-mono text-[10px] text-[#525252] uppercase">
+            <div className="fixed bottom-8 right-12 z-50 font-mono text-[10px] text-[#A8A29E] uppercase px-3 py-1 bg-white/5 backdrop-blur-sm border border-white/5 whitespace-nowrap">
                 [SCROLL_Y]
             </div>
 
 
             {/* CONTENT GRID */}
-            <div className="w-full max-w-[1920px] mx-auto grid grid-cols-12 h-full border-x border-[#262626]">
+            <div className="w-full max-w-[1920px] mx-auto grid grid-cols-12 h-full border-x border-amber-400/10">
 
                 {/* --------------------
                     LEFT COLUMN (Col 1-4) - LIST
                    -------------------- */}
-                <div className="hidden lg:flex col-span-4 border-r border-[#262626] flex-col relative px-12">
+                <div className="hidden lg:flex col-span-4 border-r border-amber-400/10 flex-col relative px-12">
                     {/* CENTERED LIST BLOCK */}
                     <div className="h-full flex flex-col justify-center gap-10">
                         {PROJECTS_LEFT.map((p, i) => {
                             const isActive = activeIndex === i;
                             return (
                                 <div key={p.id} className={`group cursor-pointer transition-all duration-300 flex items-center gap-4 ${isActive ? "opacity-100 translate-x-4" : "opacity-30 hover:opacity-60"}`}>
-                                    <div className="font-mono text-[10px] w-6 text-[#525252] group-hover:text-[#EDEDED] transition-colors">{p.id}/</div>
-                                    <div className={`font-sans text-sm tracking-widest uppercase font-medium`}>
+                                    <div className="font-mono text-[10px] w-6 text-[#A8A29E] group-hover:text-[#FDB9C8] transition-colors">{p.id}/</div>
+                                    <div className={`font-serif text-3xl md:text-5xl tracking-tight leading-none group-hover:text-[#FEF3C7] group-hover:italic transition-all`}>
                                         {p.client}
                                     </div>
                                 </div>
@@ -108,7 +115,7 @@ export default function HeroSection() {
                     CENTER COLUMN (Col 5-8) - SCROLLABLE
                     (Visible on Mobile as Full Width, 3-col on Desktop)
                    -------------------- */}
-                <div className="col-span-12 lg:col-span-4 relative overflow-hidden flex flex-col items-center border-r border-[#262626] lg:border-r-0">
+                <div className="col-span-12 lg:col-span-4 relative overflow-hidden flex flex-col items-center border-r border-amber-400/10 lg:border-r-0">
 
                     {/* SCROLL CONTAINER */}
                     <div
@@ -136,8 +143,8 @@ export default function HeroSection() {
                         {[...IMAGES, ...IMAGES, ...IMAGES, ...IMAGES].map((src, i) => (
                             <div key={i} className="w-full aspect-[3/4] flex-shrink-0 relative group snap-center pl-12 pr-12 py-12">
                                 {/* IMAGE CARD */}
-                                <div className="w-full h-full relative overflow-hidden">
-                                    <img src={src} className="w-full h-full object-cover grayscale brightness-[0.6] group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700 ease-out scale-100 group-hover:scale-105" alt="Project" />
+                                <div className="w-full h-full relative overflow-hidden border border-white/5">
+                                    <img src={src} className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 ease-out scale-100 group-hover:scale-105" alt="Project" />
                                 </div>
                             </div>
                         ))}
@@ -145,7 +152,7 @@ export default function HeroSection() {
 
                     {/* CROSSHAIR */}
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 mix-blend-difference">
-                        <div className="w-2 h-2 border border-[#EDEDED] bg-transparent" />
+                        <div className="w-2 h-2 border border-[#FDB9C8] bg-transparent" />
                     </div>
 
                 </div>
@@ -153,7 +160,7 @@ export default function HeroSection() {
                 {/* --------------------
                     RIGHT COLUMN (Col 9-12) - LIST
                    -------------------- */}
-                <div className="hidden lg:flex col-span-4 border-l border-[#262626] flex-col relative px-12">
+                <div className="hidden lg:flex col-span-4 border-l border-amber-400/10 flex-col relative px-12">
                     {/* CENTERED LIST BLOCK */}
                     <div className="h-full flex flex-col justify-center gap-10 text-right">
                         {PROJECTS_RIGHT.map((p, i) => {
@@ -161,8 +168,8 @@ export default function HeroSection() {
                             const isActive = activeIndex === idx;
                             return (
                                 <div key={p.id} className={`group cursor-pointer transition-all duration-300 flex items-center justify-end gap-4 ${isActive ? "opacity-100 -translate-x-4" : "opacity-30 hover:opacity-60"}`}>
-                                    <div className="font-mono text-[10px] order-2 text-[#525252] group-hover:text-[#EDEDED] transition-colors">\{p.id}</div>
-                                    <div className={`font-sans text-sm tracking-widest uppercase font-medium order-1`}>
+                                    <div className="font-mono text-[10px] order-2 text-[#A8A29E] group-hover:text-[#FDB9C8] transition-colors">\{p.id}</div>
+                                    <div className={`font-serif text-3xl md:text-5xl tracking-tight leading-none order-1 group-hover:text-[#FEF3C7] group-hover:italic transition-all`}>
                                         {p.client}
                                     </div>
                                 </div>

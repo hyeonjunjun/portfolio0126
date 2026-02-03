@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 import InertialScroll from "@/components/InertialScroll";
+import CustomCursor from "@/components/CustomCursor";
 
 
 const geistSans = Geist({
@@ -12,6 +13,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const outfit = Outfit({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -26,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${outfit.variable}`}>
         <InertialScroll>
           {children}
         </InertialScroll>

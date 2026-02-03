@@ -4,8 +4,6 @@ import { motion, useScroll, useSpring } from "framer-motion";
 
 export default function CustomScrollbar() {
     const { scrollYProgress } = useScroll();
-
-    // Smooth out the scroll progress
     const scaleY = useSpring(scrollYProgress, {
         stiffness: 100,
         damping: 30,
@@ -13,13 +11,14 @@ export default function CustomScrollbar() {
     });
 
     return (
-        <div className="fixed top-0 right-0 w-[4px] h-full z-[100] mix-blend-difference pointer-events-none hidden md:block">
-            {/* The Track (Optional, keeping it invisible for minimal look) */}
+        <div className="fixed right-0 top-0 h-screen w-3 z-[100] mix-blend-difference pointer-events-none hidden md:block">
+            {/* Track Line */}
+            <div className="absolute right-[5px] top-0 h-full w-[1px] bg-white/20" />
 
-            {/* The Thumb */}
+            {/* Thumb */}
             <motion.div
-                className="w-full bg-[#1C1917] origin-top rounded-full"
-                style={{ scaleY, height: "100%" }}
+                style={{ scaleY, transformOrigin: "top" }}
+                className="absolute right-[3px] top-0 w-[5px] h-full bg-white origin-top"
             />
         </div>
     );
