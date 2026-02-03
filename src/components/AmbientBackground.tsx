@@ -22,13 +22,15 @@ const FogShader = () => {
 
     useFrame((state) => {
         if (mesh.current) {
-            mesh.current.material.uniforms.uTime.value = state.clock.getElapsedTime();
+            const material = mesh.current.material as THREE.ShaderMaterial;
+            material.uniforms.uTime.value = state.clock.getElapsedTime();
+
             // Smooth mouse transition
             const targetMouseX = (state.mouse.x * 0.5) + 0.5; // 0 to 1
             const targetMouseY = (state.mouse.y * 0.5) + 0.5;
 
             // Simple lerp for mouse interaction in shader
-            mesh.current.material.uniforms.uMouse.value.lerp(new THREE.Vector2(targetMouseX, targetMouseY), 0.05);
+            material.uniforms.uMouse.value.lerp(new THREE.Vector2(targetMouseX, targetMouseY), 0.05);
         }
     });
 
