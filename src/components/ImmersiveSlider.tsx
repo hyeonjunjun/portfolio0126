@@ -31,7 +31,7 @@ export default function ImmersiveSlider({ onProjectClick, isPaused, className = 
     const activeProject = PROJECTS[index] || PROJECTS[0];
 
     return (
-        <section className={`relative w-full h-screen overflow-hidden bg-[#0C0A0A] text-white ${className}`}>
+        <section className={`relative w-full h-screen overflow-hidden bg-transparent text-black ${className}`}>
 
             {/* FULL BLEED BACKGROUND - DELAYED TRANSITION */}
             <div
@@ -58,8 +58,8 @@ export default function ImmersiveSlider({ onProjectClick, isPaused, className = 
                             filter: "blur(60px) brightness(0.8)",
                         }}
                         transition={{
-                            duration: 1.2,
-                            ease: [0.22, 1, 0.36, 1]
+                            duration: 1.8,
+                            ease: [0.25, 1, 0.5, 1]
                         }}
                         className="absolute inset-0 w-full h-full"
                     >
@@ -72,73 +72,69 @@ export default function ImmersiveSlider({ onProjectClick, isPaused, className = 
                 </AnimatePresence>
             </div>
 
-            {/* OVERLAY CONTENT - INSTANT TRANSITION */}
-            <motion.div
-                animate={{ opacity: isPaused ? 0 : 1 }}
-                transition={{ duration: 0.5 }}
-                className="absolute inset-0 z-30 pointer-events-none px-8 flex items-center"
-            >
-                <div className="w-full flex items-center">
-                    {/* TITLE */}
-                    <div className="w-1/2">
-                        <AnimatePresence mode="wait">
-                            <RadialTextFade
-                                key={activeProject.title}
-                                text={activeProject.title}
-                                className="text-[1.2vw] font-serif tracking-widest leading-none text-white uppercase"
-                            />
-                        </AnimatePresence>
-                    </div>
+            {/* PROJECT METADATA - TOP LEFT */}
+            <div className="absolute top-12 left-12 z-40 pointer-events-none">
+                <motion.div
+                    key={activeProject.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                    className="flex flex-col gap-1"
+                >
+                    <span className="font-mono text-[10px] tracking-[0.3em] text-black/40 uppercase">
+                        [{activeProject.category}]
+                    </span>
+                    <span className="font-mono text-[10px] tracking-[0.2em] text-black/20">
+                        {index + 1} / {PROJECTS.length}
+                    </span>
+                </motion.div>
+            </div>
 
-                    {/* SUBTITLE */}
-                    <div className="w-1/2 flex justify-end">
-                        <div className="max-w-xs overflow-hidden">
-                            <AnimatePresence mode="wait">
-                                <motion.p
-                                    key={activeProject.subtitle}
-                                    initial={{ y: "100%", opacity: 0 }}
-                                    animate={{ y: 0, opacity: 1 }}
-                                    exit={{ y: "-100%", opacity: 0 }}
-                                    transition={{ duration: 0.5, ease: "easeInOut" }}
-                                    className="text-base font-serif italic mb-2 text-right opacity-100 leading-relaxed text-white tracking-wider"
-                                >
-                                    {activeProject.subtitle}
-                                </motion.p>
-                            </AnimatePresence>
-                        </div>
-                    </div>
+            {/* MAIN CONTENT OVERLAY */}
+            <div className="absolute inset-0 z-30 pointer-events-none flex flex-col justify-center px-12 md:px-24">
+                <div className="max-w-6xl w-full">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={activeProject.id}
+                            initial={{ opacity: 0, y: 40 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -40 }}
+                            transition={{
+                                duration: 1.2,
+                                ease: [0.25, 1, 0.5, 1]
+                            }}
+                            className="flex flex-col gap-4"
+                        >
+                            <h2 className="text-[12vw] md:text-[10vw] font-serif leading-[0.85] tracking-tighter text-black select-none">
+                                {activeProject.title}
+                            </h2>
+                            <p className="text-xl md:text-3xl font-serif font-light text-black/50 max-w-2xl italic leading-tight">
+                                {activeProject.description}
+                            </p>
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
-            </motion.div>
+            </div>
 
-            {/* METADATA (Bottom) - INSTANT */}
-            <motion.div
-                animate={{ opacity: isPaused ? 0 : 0.4 }}
-                className="absolute bottom-12 left-8 z-40 flex gap-24 font-serif text-[13px] uppercase tracking-[0.2em] text-white"
-            >
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={activeProject.id}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="flex gap-24"
-                    >
-                        <div className="flex flex-col gap-2">
-                            <span className="opacity-50">(Credits)</span>
-                            <span>{activeProject.credits}</span>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <span className="opacity-50">(Role)</span>
-                            <span>{activeProject.role}</span>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <span className="opacity-50">(Year)</span>
-                            <span>{activeProject.year}</span>
-                        </div>
-                    </motion.div>
-                </AnimatePresence>
-            </motion.div>
+            {/* CURSOR GUIDE / INTERACTION CTA */}
+            <div className="absolute bottom-12 left-12 z-40 flex items-center gap-6">
+                <div className="group flex items-center gap-3 cursor-pointer pointer-events-auto"
+                    onClick={() => !isPaused && onProjectClick(activeProject)}>
+                    <div className="w-12 h-px bg-black/20 group-hover:w-20 transition-all duration-700 ease-gentle" />
+                    <span className="font-mono text-[10px] tracking-widest text-black/60 group-hover:text-black transition-colors">
+                        EXPLORE PROJECT
+                    </span>
+                </div>
+            </div>
+
+            {/* PROGRESS BAR - REMOVED FOR MINIMALISM & BUG FIX */}
+            <div className="absolute bottom-12 right-12 z-40 w-48 flex flex-col gap-2 opacity-0">
+            </div>
+
+            {/* ATMOSPHERIC NOISE OVERLAY - ADAPTIVE */}
+            <div className="absolute inset-0 z-10 pointer-events-none mix-blend-overlay opacity-[0.03]"
+                style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
+            />
 
             {/* THUMBNAIL NAV */}
             <motion.div
@@ -148,7 +144,7 @@ export default function ImmersiveSlider({ onProjectClick, isPaused, className = 
                 {PROJECTS.map((p: Project, i: number) => (
                     <div
                         key={p.id}
-                        className={`w-10 h-7 border border-white/10 overflow-hidden transition-all ${i === index ? "w-20 opacity-100" : "opacity-20"}`}
+                        className={`w-10 h-7 border border-black/10 overflow-hidden transition-all ${i === index ? "w-20 opacity-100" : "opacity-20"}`}
                         data-cursor-label="( Switch )"
                     >
                         <img src={p.media} className="w-full h-full object-cover" alt="" />

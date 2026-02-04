@@ -11,14 +11,16 @@ export default function SectionFade({ children, className = "" }: { children: Re
     });
 
     // Fade in when entering, Fade out when leaving
-    // 0 -> 0.2 (Fade In) | 0.8 -> 1.0 (Fade Out)
-    const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-    const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.95, 1, 1, 0.95]);
+    // Extended duration and softer parameters for a "drifting" feel
+    const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+    const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.98, 1, 1, 0.98]);
+    const y = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [20, 0, 0, -20]);
 
     return (
         <motion.div
             ref={ref}
-            style={{ opacity, scale }}
+            style={{ opacity, scale, y }}
+            transition={{ duration: 1.5, ease: [0.25, 1, 0.5, 1] }}
             className={className}
         >
             {children}

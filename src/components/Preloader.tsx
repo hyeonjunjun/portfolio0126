@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-export default function Preloader({ onComplete }: { onComplete: () => void }) {
+export default function Preloader({ onCompleteAction }: { onCompleteAction: () => void }) {
     const [count, setCount] = useState(0);
 
     useEffect(() => {
@@ -15,7 +15,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
             setCount((prev) => {
                 if (prev >= 100) {
                     clearInterval(timer);
-                    setTimeout(onComplete, 500);
+                    setTimeout(onCompleteAction, 500);
                     return 100;
                 }
                 return prev + 1;
@@ -23,15 +23,19 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         }, intervalTime);
 
         return () => clearInterval(timer);
-    }, [onComplete]);
+    }, [onCompleteAction]);
 
     return (
         <motion.div
-            className="fixed inset-0 z-50 bg-[#050505] text-[#EDEDED] grid grid-cols-2 overflow-hidden"
-            exit={{ y: "-100%", transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } }}
+            className="fixed inset-0 z-50 bg-[#f8fafc] text-[#1a1a1a] grid grid-cols-2 overflow-hidden"
+            exit={{
+                opacity: 0,
+                scale: 1.05,
+                transition: { duration: 1.5, ease: [0.25, 1, 0.5, 1] }
+            }}
         >
             {/* LEFT COLUMN - DATA */}
-            <div className="h-full border-r border-[#262626] p-8 md:p-12 flex flex-col justify-between font-mono text-[10px] uppercase tracking-wider relative">
+            <div className="h-full border-r border-black/10 p-8 md:p-12 flex flex-col justify-between font-mono text-[10px] uppercase tracking-wider relative">
                 {/* TOP */}
                 <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2">

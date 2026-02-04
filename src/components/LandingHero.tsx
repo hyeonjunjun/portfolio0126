@@ -15,11 +15,9 @@ export default function LandingHero() {
     const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
     return (
-        <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-transparent text-white">
-            {/* 3D Background - Parallax */}
-            <motion.div style={{ y }} className="absolute inset-0 z-0">
-                <SonicMistBackground />
-            </motion.div>
+        <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-transparent text-black">
+            {/* 3D Background - Removed (now global) */}
+            <motion.div style={{ y }} className="absolute inset-0 z-0" />
 
             {/* Content Contentier */}
             <motion.div
@@ -29,7 +27,7 @@ export default function LandingHero() {
                 {/* Header */}
                 <div className="flex justify-between items-start">
                     <h1 className="absolute top-1/2 -translate-y-1/2 font-serif text-[7.5vw] leading-[0.8] tracking-tighter mix-blend-overlay opacity-90">
-                        Hyeonjun<br />Jun
+                        Hyeonjoon<br />Jun
                     </h1>
                     <div className="text-right font-serif text-sm tracking-widest uppercase opacity-60 hidden md:block">
 

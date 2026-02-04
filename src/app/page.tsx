@@ -6,6 +6,7 @@ import Preloader from "../components/Preloader";
 import ImmersiveSlider from "../components/ImmersiveSlider";
 import LandingHero from "../components/LandingHero";
 import Philosophy from "../components/Philosophy";
+import Ethos from "../components/Ethos";
 import LandingFooter from "../components/LandingFooter";
 import CustomScrollbar from "../components/CustomScrollbar";
 import SectionFade from "../components/SectionFade";
@@ -13,6 +14,8 @@ import ProjectHUD from "../components/ProjectHUD";
 import ProjectMenu from "../components/ProjectMenu";
 import ProjectDetail from "../components/ProjectDetail";
 import { Project, PROJECTS } from "../constants/projects";
+
+import SonicMistBackground from "../components/SonicMistBackground";
 
 export default function Home() {
   const [preloaderComplete, setPreloaderComplete] = useState(false);
@@ -62,18 +65,20 @@ export default function Home() {
   }, [selectedProject, isMenuOpen]);
 
   return (
-    <div className="relative w-full min-h-screen bg-transparent text-white font-serif selection:bg-[#FEF3C7] selection:text-black">
+    <div className="relative w-full min-h-screen bg-transparent text-black font-serif selection:bg-[#FEF3C7] selection:text-black">
+      <SonicMistBackground />
+
       <AnimatePresence mode="wait">
         {!preloaderComplete && (
-          <Preloader onComplete={() => setPreloaderComplete(true)} />
+          <Preloader onCompleteAction={() => setPreloaderComplete(true)} />
         )}
       </AnimatePresence>
 
       <motion.main
         initial={{ opacity: 0 }}
         animate={{ opacity: preloaderComplete ? 1 : 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="relative z-10 w-full min-h-screen" // Removed overflow-x-hidden from here to rely on body, helping sticky
+        transition={{ duration: 2.2, ease: [0.25, 1, 0.5, 1] }}
+        className="relative z-10 w-full min-h-screen"
       >
         <div className="fixed top-0 left-0 w-full z-50 pointer-events-none">
           <ProjectHUD
@@ -106,6 +111,11 @@ export default function Home() {
         {/* SECTION 2: PHILOSOPHY */}
         <SectionFade className="w-full min-h-[50vh]">
           <Philosophy />
+        </SectionFade>
+
+        {/* SECTION 2.5: ETHOS */}
+        <SectionFade className="w-full">
+          <Ethos />
         </SectionFade>
 
         {/* SECTION 3: WORK (Sticky Buffer) */}

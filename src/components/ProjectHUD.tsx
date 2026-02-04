@@ -29,7 +29,7 @@ export default function ProjectHUD({ onMenuToggle, isMenuOpen }: ProjectHUDProps
     }, []);
 
     return (
-        <nav className="fixed top-0 left-0 w-full z-[120] px-8 py-6 flex justify-between items-baseline text-white pointer-events-none">
+        <nav className="fixed top-0 left-0 w-full z-[120] px-8 py-6 flex justify-between items-baseline text-black pointer-events-none">
             <div className="flex-1">
                 <Link href="/" className="font-serif text-base font-normal tracking-widest uppercase pointer-events-auto">
                     HKJSTUDIO©
@@ -56,14 +56,14 @@ export default function ProjectHUD({ onMenuToggle, isMenuOpen }: ProjectHUDProps
                             rotate: isMenuOpen ? 45 : 0,
                             y: isMenuOpen ? 1 : 0
                         }}
-                        className="w-full h-[1px] bg-white origin-center"
+                        className="w-full h-[1px] bg-black origin-center"
                     />
                     <motion.div
                         animate={{
                             rotate: isMenuOpen ? -45 : 0,
                             y: isMenuOpen ? -1 : 0
                         }}
-                        className="w-full h-[1px] bg-white origin-center"
+                        className="w-full h-[1px] bg-black origin-center"
                     />
                 </button>
             </div>
