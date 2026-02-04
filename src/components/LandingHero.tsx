@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import KomorebiBackground from "./KomorebiBackground";
+import SonicMistBackground from "./SonicMistBackground";
 
 export default function LandingHero() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -15,10 +15,10 @@ export default function LandingHero() {
     const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
     return (
-        <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-[#0C0A0A] text-white">
+        <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-[#050505] text-white">
             {/* 3D Background - Parallax */}
             <motion.div style={{ y }} className="absolute inset-0 z-0">
-                <KomorebiBackground />
+                <SonicMistBackground />
             </motion.div>
 
             {/* Content Contentier */}
