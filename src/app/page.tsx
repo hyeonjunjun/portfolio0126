@@ -15,7 +15,7 @@ import ProjectMenu from "../components/ProjectMenu";
 import ProjectDetail from "../components/ProjectDetail";
 import { Project, PROJECTS } from "../constants/projects";
 
-import ParticleSacredGeometry from "../components/ParticleSacredGeometry";
+import ButterflyParticles from "../components/ButterflyParticles";
 
 export default function Home() {
   const [preloaderComplete, setPreloaderComplete] = useState(false);
@@ -35,7 +35,7 @@ export default function Home() {
 
   return (
     <div className="relative w-full min-h-screen bg-transparent text-black font-serif selection:bg-[#FEF3C7] selection:text-black">
-      <ParticleSacredGeometry />
+      <ButterflyParticles />
 
       <AnimatePresence mode="wait">
         {!preloaderComplete && (
