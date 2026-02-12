@@ -1,50 +1,40 @@
 "use client";
 
 import Link from "next/link";
+import HandDrawnDivider from "./HandDrawnDivider";
 
 export default function LandingFooter() {
     return (
-        <footer className="w-full bg-transparent text-black pt-48 pb-12 px-8 border-t border-black/5 font-serif overflow-hidden">
-            <div className="max-w-[1920px] mx-auto flex flex-col justify-between min-h-[70vh]">
+        <footer className="w-full bg-[#F2F0E9] text-[#1A1A18] pt-24 pb-12 px-8 overflow-hidden relative">
+            {/* Top Texture Line */}
+            <div className="absolute top-0 left-0 w-full h-[1px] bg-[#1A1A18] opacity-10" />
 
-                {/* TOP: BIG LINKS */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
-                    <div className="relative">
-                        <h3 className="text-[15vw] leading-[0.75] tracking-tighter text-black opacity-5 select-none">
-                            LET'S<br />TALK
-                        </h3>
-                        <div className="absolute top-1/2 left-0 -translate-y-1/2">
-                            <h3 className="text-[15vw] leading-[0.75] tracking-tighter text-black mix-blend-multiply opacity-20">
-                                LET'S<br />TALK
-                            </h3>
+            <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
+
+                <HandDrawnDivider className="mb-12" />
+
+                {/* The Stamp */}
+                <div className="relative group cursor-pointer mb-16">
+                    <div className="w-48 h-48 rounded-full border-4 border-[#D94E1E] flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity rotate-[-12deg] group-hover:rotate-[-5deg] duration-300 ease-out">
+                        <div className="text-[#D94E1E] font-serif text-center leading-none p-2">
+                            <div className="text-sm uppercase tracking-widest mb-1">Ryan Jun</div>
+                            <div className="text-4xl font-bold">DIGITAL<br />ARTISAN</div>
+                            <div className="text-xs font-mono mt-2">EST. 2026</div>
                         </div>
-                    </div>
-
-                    <div className="flex flex-col gap-8 text-3xl md:text-5xl lg:text-6xl leading-tight justify-center">
-                        <Link href="mailto:hello@hkj.studio" className="group flex items-center gap-6 transition-all">
-                            <span className="opacity-40 group-hover:opacity-100 group-hover:italic transition-all duration-700">hello@hkj.studio</span>
-                            <div className="w-0 group-hover:w-24 h-[1px] bg-black opacity-20 transition-all duration-700" />
-                        </Link>
-                        <Link href="https://instagram.com" className="group flex items-center gap-6 transition-all">
-                            <span className="opacity-40 group-hover:opacity-100 group-hover:italic transition-all duration-700">@hkj.studio</span>
-                            <div className="w-0 group-hover:w-24 h-[1px] bg-black opacity-20 transition-all duration-700" />
-                        </Link>
-                        <Link href="https://linkedin.com" className="group flex items-center gap-6 transition-all">
-                            <span className="opacity-40 group-hover:opacity-100 group-hover:italic transition-all duration-700">LinkedIn</span>
-                            <div className="w-0 group-hover:w-24 h-[1px] bg-black opacity-20 transition-all duration-700" />
-                        </Link>
                     </div>
                 </div>
 
-                {/* BOTTOM: LEGALS */}
-                <div className="flex flex-col md:flex-row justify-between items-end mt-48 gap-8 border-t border-black/5 pt-12">
-                    <div className="font-mono text-[10px] tracking-[0.3em] uppercase opacity-20">
-                        SEOUL [KR] — LONDON [UK] — NEW YORK [US]
-                    </div>
-                    <div className="font-mono text-[10px] tracking-[0.3em] uppercase opacity-20 text-right leading-loose">
-                        © 2026 HKJ STUDIO. ALL RIGHTS RESERVED.<br />
-                        DESIGNED & BUILT BY HKJ.
-                    </div>
+                {/* Links */}
+                <div className="flex flex-wrap justify-center gap-8 md:gap-16 font-mono text-sm uppercase tracking-widest text-[#1A1A18]/60">
+                    <Link href="/" className="hover:text-[#D94E1E] hover:underline underline-offset-4 decoration-wavy">Work</Link>
+                    <Link href="/about" className="hover:text-[#D94E1E] hover:underline underline-offset-4 decoration-wavy">About</Link>
+                    <Link href="/lab" className="hover:text-[#D94E1E] hover:underline underline-offset-4 decoration-wavy">The Lab</Link>
+                    <Link href="mailto:hello@ryanjun.com" className="hover:text-[#D94E1E] hover:underline underline-offset-4 decoration-wavy">Contact</Link>
+                </div>
+
+                {/* Copyright */}
+                <div className="mt-16 text-xs font-serif italic opacity-40">
+                    &copy; 2026 Ryan Jun. Code is Craft.
                 </div>
             </div>
         </footer>

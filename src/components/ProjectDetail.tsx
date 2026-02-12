@@ -1,7 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { PROJECTS, Project } from "@/constants/projects";
+import { Project } from "@/constants/projects";
+import HandDrawnDivider from "./HandDrawnDivider";
+import InkButton from "./InkButton";
+import HighlighterSpan from "./HighlighterSpan";
 
 interface ProjectDetailProps {
     project: Project;
@@ -9,128 +12,131 @@ interface ProjectDetailProps {
 }
 
 export default function ProjectDetail({ project, onClose }: ProjectDetailProps) {
-    // Filter out the current project for the "Explore More" list
-    const otherProjects = PROJECTS.filter(p => p.id !== project.id).slice(0, 5);
-
     return (
         <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed top-0 right-0 w-full md:w-[65vw] h-full z-[160] bg-[#0C0A0A] text-white overflow-y-auto no-scrollbar selection:bg-white selection:text-black shadow-[-20px_0_60px_rgba(0,0,0,0.5)] border-l border-white/10"
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+            className="fixed inset-0 z-[100] bg-[#F2F0E9] text-[#1A1A18] overflow-y-auto no-scrollbar"
         >
-            {/* STICKY HEADER */}
-            <div className="w-full px-8 md:px-20 py-8 flex justify-between items-start border-b border-white/10 bg-[#0C0A0A]/90 backdrop-blur-md sticky top-0 z-50">
-                <div className="font-serif italic text-[13px] tracking-wider opacity-60">
-                    (Case Study)
-                </div>
+            {/* Sticky Header */}
+            <div className="sticky top-0 left-0 w-full z-10 flex justify-between items-center px-6 py-4 bg-[#F2F0E9]/90 backdrop-blur-sm border-b border-[#1A1A18]/10">
+                <span className="font-mono text-xs uppercase tracking-widest text-[#D94E1E]">
+                    File No. {project.id}
+                </span>
                 <button
                     onClick={onClose}
-                    className="font-mono text-[10px] tracking-widest hover:italic cursor-pointer hover:opacity-50 transition-opacity uppercase"
-                    data-cursor-label="( Close )"
+                    className="font-mono text-xs uppercase tracking-widest hover:line-through decoration-[#D94E1E] decoration-2"
                 >
-                    [Close]
+                    [Close Archive]
                 </button>
             </div>
 
-            <div className="max-w-[1400px] mx-auto px-8 md:px-20 py-24">
+            <div className="max-w-4xl mx-auto px-6 py-20">
 
-                {/* NARRATIVE HEADER (Split Layout) */}
-                <div className="flex flex-col md:flex-row justify-between gap-12 mb-32">
-                    <div className="font-serif text-[13px] tracking-widest uppercase opacity-40 md:w-1/4">
-                        {project.category}
+                {/* Title Section */}
+                <div className="text-center mb-16">
+                    <span className="font-serif italic text-xl text-[#1A1A18]/60 mb-4 block">
+                        Case Study: {project.category}
+                    </span>
+                    <h1 className="font-serif text-6xl md:text-8xl text-[#1A1A18] mb-8 leading-[0.9]">
+                        {project.title}
+                    </h1>
+                    <p className="font-serif text-xl md:text-2xl text-[#1A1A18]/80 max-w-2xl mx-auto leading-relaxed">
+                        {project.description}
+                    </p>
+                </div>
+
+                {/* Meta Data Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 border-y border-[#1A1A18]/10 py-8 mb-20">
+                    <div>
+                        <span className="block font-mono text-[10px] uppercase tracking-widest text-[#D94E1E] mb-2">Role</span>
+                        <span className="font-serif text-lg">{project.role}</span>
                     </div>
-                    <div className="md:w-3/4 flex flex-col gap-8">
-                        <h1 className="text-4xl md:text-5xl font-serif leading-tight">
-                            {project.title} <span className="opacity-40 italic">is a platform for next-gen discovery,</span> {project.subtitle}
-                        </h1>
-                        <p className="text-lg font-serif text-white opacity-60 leading-relaxed max-w-xl">
-                            {project.description}
-                        </p>
+                    <div>
+                        <span className="block font-mono text-[10px] uppercase tracking-widest text-[#D94E1E] mb-2">Year</span>
+                        <span className="font-serif text-lg">{project.year}</span>
+                    </div>
+                    <div>
+                        <span className="block font-mono text-[10px] uppercase tracking-widest text-[#D94E1E] mb-2">Output</span>
+                        <span className="font-serif text-lg">{project.category}</span>
+                    </div>
+                    <div className="flex items-center justify-end">
+                        {/* Live Link Button */}
+                        <a href={project.media || "#"} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2 font-mono text-xs uppercase tracking-widest hover:text-[#D94E1E]">
+                            Open File <span>↗</span>
+                        </a>
                     </div>
                 </div>
 
-                {/* DETAILS TABLE (Clean Lines) */}
-                <div className="mb-32 w-full border-t border-white/10">
-                    <div className="grid grid-cols-2 md:grid-cols-4 pt-6 font-serif">
-                        {[
-                            { label: "Client", value: project.title },
-                            { label: "Year", value: project.year },
-                            { label: "Location", value: project.location },
-                            { label: "Credits", value: project.credits }
-                        ].map((item, i) => (
-                            <div key={i} className="flex flex-col gap-4">
-                                <span className="text-[10px] uppercase tracking-widest opacity-40">{item.label}</span>
-                                <span className="text-[13px] tracking-wide">{item.value}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                {/* Field Report Content */}
+                <div className="space-y-24">
 
-                {/* MEDIA SECTION w/ FLOATING ACTION BUTTON */}
-                <div className="w-full aspect-video bg-[#121212] relative group overflow-hidden rounded-sm mb-32 border border-white/5">
-                    <img
-                        src={project.media}
-                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-1000"
-                        alt=""
-                    />
-
-                    {/* Floating Action Button (FAB) */}
-                    <div className="absolute bottom-6 right-6 z-20">
-                        <button
-                            className="bg-white text-black px-6 py-3 rounded-sm flex items-center gap-3 hover:scale-105 transition-transform duration-300 shadow-xl"
-                            data-cursor-label="( Visit )"
-                        >
-                            <div className="w-8 h-8 rounded-sm overflow-hidden relative">
-                                <img src={project.media} className="w-full h-full object-cover" alt="" />
-                            </div>
-                            <span className="font-serif text-[13px] tracking-wide">Live Site</span>
-                            <span className="text-[10px] opacity-60">↗</span>
-                        </button>
-                    </div>
-                </div>
-
-                {/* EXPLORE MORE (Tabular List) */}
-                <div className="w-full pt-12 border-t border-white/10">
-                    <div className="flex justify-between items-baseline mb-12">
-                        <h2 className="text-[13px] tracking-widest opacity-40 uppercase">Explore More ({otherProjects.length})</h2>
-                        <p className="font-serif italic text-white/40 text-sm max-w-xs text-right hidden md:block">
-                            A space for exploration, creative concepts, and work-in-progress ideas.
-                        </p>
-                    </div>
-
-                    <div className="flex flex-col">
-                        {/* Table Header */}
-                        <div className="hidden md:flex pb-4 border-b border-white/10 font-mono text-[10px] uppercase tracking-widest opacity-40">
-                            <div className="w-24">(Index)</div>
-                            <div className="flex-1">Title</div>
-                            <div className="flex-1">Category</div>
+                    {/* The Observation (Problem) */}
+                    <section>
+                        <div className="flex items-center gap-4 mb-6">
+                            <div className="w-8 h-[1px] bg-[#D94E1E]" />
+                            <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-[#D94E1E]">
+                                01. The Observation
+                            </h3>
                         </div>
+                        <h4 className="font-serif text-3xl md:text-4xl mb-6">
+                            Identifying the <HighlighterSpan color="#FFE4BC" delay={0.2}>signal</HighlighterSpan> in the noise.
+                        </h4>
+                        <p className="font-serif text-lg leading-relaxed text-[#1A1A18]/80 columns-1 md:columns-2 gap-12">
+                            Every project begins with a question. For {project.title}, we observed a disconnect between the digital interface and the human intent. The goal was to bridge this gap using tactile interactions and fluid motion.
+                            <br /><br />
+                            We approached this problem like archaelogists, digging through the layers of user needs to find the core purpose. The result is a system that feels inevitable.
+                        </p>
+                    </section>
 
-                        {/* List Items */}
-                        {otherProjects.map((p, idx) => (
-                            <div
-                                key={p.id}
-                                className="group flex flex-col md:flex-row md:items-center py-6 border-b border-white/10 cursor-pointer hover:bg-white/5 transition-colors"
-                            >
-                                <div className="w-24 font-serif italic text-[13px] opacity-40 group-hover:opacity-100 transition-opacity">
-                                    ({String(idx + 1).padStart(2, '0')})
-                                </div>
-                                <div className="flex-1 font-serif text-[16px] tracking-wide mb-2 md:mb-0 group-hover:translate-x-2 transition-transform duration-300">
-                                    {p.title}
-                                </div>
-                                <div className="flex-1 font-serif italic text-[13px] opacity-40">
-                                    {p.category}
-                                </div>
-
-                                {/* Hover Thumbnail (Hidden by default, could be added) */}
-                                <div className="hidden md:block w-16 h-10 opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 overflow-hidden">
-                                    <img src={p.media} className="w-full h-full object-cover grayscale" alt="" />
-                                </div>
-                            </div>
-                        ))}
+                    <div className="w-full aspect-video bg-[#E5E5E5] relative grayscale contrast-125 overflow-hidden shadow-lg rotate-1 my-12">
+                        {/* Image Placeholder */}
+                        <img src={project.media} alt="Process" className="w-full h-full object-cover" />
+                        <div className="absolute inset-0 bg-[#F2F0E9] mix-blend-multiply opacity-20" />
                     </div>
+
+                    {/* The Hypothesis (Solution) */}
+                    <section>
+                        <div className="flex items-center gap-4 mb-6">
+                            <div className="w-8 h-[1px] bg-[#D94E1E]" />
+                            <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-[#D94E1E]">
+                                02. The Hypothesis
+                            </h3>
+                        </div>
+                        <h4 className="font-serif text-3xl md:text-4xl mb-6">
+                            Constructing a logic of <span className="italic">weight</span> and <span className="italic">texture</span>.
+                        </h4>
+                        <p className="font-serif text-lg leading-relaxed text-[#1A1A18]/80">
+                            Our solution focused on the concept of "Digital Materiality." By treating UI elements as physical objects with mass and friction, we created an environment that respects user attention. The typography (using Fraunces and JetBrains Mono) reinforces this duality of the mechanical and the organic.
+                        </p>
+                    </section>
+
+                    <HandDrawnDivider className="my-16" />
+
+                    {/* The Synthesis (Result) */}
+                    <section>
+                        <div className="flex items-center gap-4 mb-6">
+                            <div className="w-8 h-[1px] bg-[#D94E1E]" />
+                            <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-[#D94E1E]">
+                                03. The Synthesis
+                            </h3>
+                        </div>
+                        <div className="bg-white p-8 md:p-12 shadow-sm border border-[#1A1A18]/5">
+                            <p className="font-serif text-xl md:text-2xl italic text-center leading-relaxed">
+                                "{project.subtitle || "A digital artifact that stands the test of time."}"
+                            </p>
+                        </div>
+                    </section>
+
+                </div>
+
+                {/* Footer / Next */}
+                <div className="mt-32 flex justify-center">
+                    <InkButton onClick={onClose}>
+                        Return to Archive
+                    </InkButton>
                 </div>
 
             </div>
