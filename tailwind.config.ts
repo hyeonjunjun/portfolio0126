@@ -9,26 +9,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        primary: {
-          DEFAULT: "var(--primary)",
-          foreground: "var(--primary-foreground)",
-        },
-        secondary: {
-          DEFAULT: "var(--secondary)",
-          foreground: "var(--secondary-foreground)",
-        },
-        muted: {
-          DEFAULT: "var(--muted)",
-          foreground: "var(--muted-foreground)",
-        },
-        border: "var(--border)",
+        canvas: "#F0F0F0",
+        ink: "#1A1A1A",
+        "ink-muted": "#6B6B6B",
+        "ink-faint": "#9A9A9A",
+        border: "#D8D8D8",
       },
       fontFamily: {
-        sans: ["var(--font-geist-sans)", "sans-serif"],
+        display: ["var(--font-display)", "Georgia", "serif"],
+        sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-geist-mono)", "monospace"],
-        // Fallbacks included in variable definitions
       },
       container: {
         center: true,
@@ -38,9 +28,9 @@ const config: Config = {
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "0.625rem",
+        md: "0.425rem",
+        sm: "0.225rem",
       },
     },
   },
@@ -48,4 +38,3 @@ const config: Config = {
 };
 
 export default config;
-

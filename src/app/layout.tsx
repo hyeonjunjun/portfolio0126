@@ -1,25 +1,41 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Instrument_Serif, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import AtmosphericGrain from "@/components/AtmosphericGrain";
+import CurtainPreloader from "@/components/CurtainPreloader";
+import DynamicIsland from "@/components/DynamicIsland";
 
-const sans = Inter({
+/* ─── Typography ─── */
+
+const instrumentSerif = Instrument_Serif({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-display",
+});
+
+const geistSans = Geist({
+  subsets: ["latin"],
+  display: "swap",
   variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
 });
 
-const mono = JetBrains_Mono({
-  variable: "--font-geist-mono",
+const geistMono = Geist_Mono({
   subsets: ["latin"],
   display: "swap",
+  variable: "--font-geist-mono",
 });
+
+/* ─── Metadata ─── */
 
 export const metadata: Metadata = {
-  title: "Ryan Jun | Design Engineer",
-  description: "Portfolio of Ryan Jun. Building AI-focused products and design systems.",
+  title: "Studio Nabi",
+  description:
+    "Digital Naturalism — Portfolio of Ryan Jun. Design engineering at the intersection of craft and code.",
 };
+
+/* ─── Root Layout ─── */
 
 export default function RootLayout({
   children,
@@ -28,8 +44,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${sans.variable} ${mono.variable} antialiased bg-background text-foreground`}>
+      <body
+        className={`${instrumentSerif.variable} ${geistSans.variable} ${geistMono.variable} antialiased bg-canvas text-ink`}
+      >
+        <CurtainPreloader />
         <AtmosphericGrain />
+        <DynamicIsland />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>

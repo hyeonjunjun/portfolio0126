@@ -2,7 +2,7 @@
 
 export default function AtmosphericGrain() {
     return (
-        <div className="pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.03] mix-blend-overlay">
+        <div className="pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.05] mix-blend-overlay">
             <svg className="h-full w-full">
                 <filter id="noise">
                     <feTurbulence
