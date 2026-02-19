@@ -282,7 +282,7 @@ export default function HeroSanctuary() {
                             Station
                         </p>
                         <span className="font-mono text-[10px] tracking-[0.1em] text-ink-muted tabular-nums">
-                            NYC, NY · 2024
+                            NYC, NY · 2026
                         </span>
                     </motion.div>
                 </div>

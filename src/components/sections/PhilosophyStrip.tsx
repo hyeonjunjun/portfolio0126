@@ -16,7 +16,7 @@ const PHRASES = [
     "Design Engineering",
     "Interfaces as Habitats",
     "NYC · Worldwide",
-    "Est. 2024",
+    "Est. 2026",
     "나비 = Butterfly",
     "Nothing is Unnecessary",
 ];

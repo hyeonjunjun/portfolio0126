@@ -125,7 +125,7 @@ export default function CurtainPreloader() {
                             animate={{ opacity: 1 }}
                             transition={{ delay: 1.4, duration: 0.6 }}
                         >
-                            NYC, NY · Est. 2024
+                            NYC, NY · Est. 2026
                         </motion.p>
                     </motion.div>
                 </motion.div>
