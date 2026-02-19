@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useMemo } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
 /**
@@ -9,13 +9,14 @@ import * as THREE from "three";
  * ───────────
  * A high-performance GLSL fluid shader background inspired by Paolo Vendramini.
  * Offloads environmental rendering to the GPU for zero main-thread impact.
+ * Refined for absolute full-bleed coverage using Orthographic projection.
  */
 
 const vertexShader = `
   varying vec2 vUv;
   void main() {
     vUv = uv;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    gl_Position = vec4(position, 1.0);
   }
 `;
 
@@ -25,8 +26,10 @@ const fragmentShader = `
   uniform vec2 uResolution;
   varying vec2 vUv;
 
-  // Simple simplex noise implementation
+  // Faster Simplex Noise octaves for fluid motion
   vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+  vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
+  vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
 
   float snoise(vec2 v){
     const vec4 C = vec4(0.211324865405187, 0.366025403784439,
@@ -53,61 +56,83 @@ const fragmentShader = `
     return n;
   }
 
+  // Cinematic high-frequency grain
+  float grain(vec2 uv, float time) {
+    return fract(sin(dot(uv, vec2(12.9898, 78.233) + time)) * 43758.5453);
+  }
+
   void main() {
     vec2 uv = vUv;
-    float time = uTime * 0.2;
+    float time = uTime * 0.12;
     
-    // Create organic liquid motion
-    float n = snoise(uv * 3.0 + time);
-    n += 0.5 * snoise(uv * 6.0 - time * 0.5);
+    // Multi-octave fluid motion (Liquid Obsidian)
+    float n = snoise(uv * 1.5 + time);
+    n += 0.5 * snoise(uv * 3.0 - time * 0.5 + n * 0.3);
+    n += 0.25 * snoise(uv * 6.0 + time * 0.2);
     
-    // Smooth obsidian gradient base
-    vec3 col1 = vec3(0.02, 0.02, 0.02); // Deep Obsidian
-    vec3 col2 = vec3(0.05, 0.05, 0.06); // Graphite
-    vec3 finalColor = mix(col1, col2, n * 0.5 + 0.5);
+    // Deep premium background palette
+    vec3 base = vec3(0.015, 0.015, 0.018); // Deeper Obsidian
+    vec3 flow = vec3(0.035, 0.035, 0.045); // Graphite Flow
+    vec3 finalColor = mix(base, flow, n * 0.5 + 0.5);
     
-    // Solar Aura (Interactive Light)
-    float dist = distance(uv, uMouse);
-    float glow = smoothstep(0.4, 0.0, dist);
+    // Solar Aura (High-Interaction Light)
+    vec2 mouse = uMouse;
+    float dist = distance(uv, mouse);
+    
+    // Atmospheric Falloff
+    float glow = smoothstep(0.6, 0.0, dist);
     vec3 auraColor = vec3(0.54, 0.62, 0.42); // Sage Glow (#8b9e6b)
-    finalColor = mix(finalColor, auraColor, glow * 0.15);
+    
+    // Chromatic weight and subtle flicker
+    finalColor = mix(finalColor, auraColor, glow * 0.16 * (1.0 + n * 0.15));
+
+    // Inject high-end grain
+    float g = grain(uv, uTime) * 0.035;
+    finalColor += g;
 
     gl_FragColor = vec4(finalColor, 1.0);
   }
 `;
 
 function ShaderMaterial() {
-    const meshRef = useRef<THREE.Mesh>(null!);
+  const meshRef = useRef<THREE.Mesh>(null!);
 
-    const uniforms = useMemo(() => ({
-        uTime: { value: 0 },
-        uMouse: { value: new THREE.Vector2(0.5, 0.5) },
-        uResolution: { value: new THREE.Vector2(0, 0) }
-    }), []);
+  const uniforms = useMemo(() => ({
+    uTime: { value: 0 },
+    uMouse: { value: new THREE.Vector2(0.5, 0.5) },
+    uResolution: { value: new THREE.Vector2(0, 0) }
+  }), []);
 
-    useFrame((state) => {
-        uniforms.uTime.value = state.clock.getElapsedTime();
-        uniforms.uMouse.value.lerp(new THREE.Vector2(state.mouse.x * 0.5 + 0.5, state.mouse.y * 0.5 + 0.5), 0.05);
-    });
+  useFrame((state) => {
+    uniforms.uTime.value = state.clock.getElapsedTime();
+    // Correctly map mouse from [-1, 1] to [0, 1] for the shader
+    uniforms.uMouse.value.lerp(new THREE.Vector2(state.mouse.x * 0.5 + 0.5, state.mouse.y * 0.5 + 0.5), 0.05);
+  });
 
-    return (
-        <mesh ref={meshRef}>
-            <planeGeometry args={[2, 2]} />
-            <shaderMaterial
-                vertexShader={vertexShader}
-                fragmentShader={fragmentShader}
-                uniforms={uniforms}
-            />
-        </mesh>
-    );
+  return (
+    <mesh ref={meshRef}>
+      <planeGeometry args={[2, 2]} />
+      <shaderMaterial
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
+        uniforms={uniforms}
+        transparent={true}
+      />
+    </mesh>
+  );
 }
 
 export default function HeroSurface() {
-    return (
-        <div className="absolute inset-0 z-0 pointer-events-none opacity-80">
-            <Canvas camera={{ position: [0, 0, 1] }}>
-                <ShaderMaterial />
-            </Canvas>
-        </div>
-    );
+  return (
+    <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+      <Canvas
+        orthographic
+        camera={{ left: -1, right: 1, top: 1, bottom: -1, near: 0, far: 1 }}
+        gl={{ antialias: false, stencil: false, depth: false }}
+        dpr={[1, 2]}
+      >
+        <ShaderMaterial />
+      </Canvas>
+    </div>
+  );
 }

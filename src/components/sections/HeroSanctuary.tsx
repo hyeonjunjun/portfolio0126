@@ -3,7 +3,6 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence, useSpring, useMotionValue } from "framer-motion";
 import Link from "next/link";
-import HeroSurface from "@/components/HeroSurface";
 
 /**
  * HeroSanctuary
@@ -198,65 +197,62 @@ export default function HeroSanctuary() {
     return (
         <section
             ref={ref}
-            className="relative h-screen overflow-hidden"
+            className="relative h-screen overflow-hidden bg-canvas"
             onMouseMove={(e) => {
-                // Keep local mouse set just in case, though global is handled by useEffect
                 mouseX.set(e.clientX / window.innerWidth);
                 mouseY.set(e.clientY / window.innerHeight);
             }}
         >
-            {/* ─── GPU-Accelerated Atmospheric Surface ─── */}
-            <HeroSurface />
-
             {/* ─── Subtle Structure Layer ─── */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden z-[1]">
-                {/* Bento Grid Substrate - Deeply reduced opacity for elegance */}
+                {/* Bento Grid Substrate - Minimalist line work */}
                 <div
-                    className="absolute inset-0 opacity-[0.02]"
+                    className="absolute inset-0 opacity-[0.03]"
                     style={{
                         backgroundImage: `linear-gradient(var(--color-border) 1px, transparent 1px), linear-gradient(90deg, var(--color-border) 1px, transparent 1px)`,
-                        backgroundSize: '80px 80px'
+                        backgroundSize: '100px 100px'
                     }}
                 />
             </div>
 
             {/* ─── Content Layer ─── */}
             <motion.div
-                className="absolute inset-0 z-10"
+                className="absolute inset-0 z-10 flex flex-col justify-between p-8 sm:p-12 lg:p-20"
                 style={{ opacity: contentOpacity, y: contentY }}
+                animate={{ y: [0, -4, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             >
-                {/* ══ TOP-LEFT: Studio Nabi ══ */}
-                <motion.div
-                    className="absolute top-8 left-8 sm:left-12 lg:left-20"
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                >
-                    <Link href="/" className="font-pixel text-[10px] tracking-[0.2em] uppercase text-ink-muted hover:text-ink transition-colors duration-300">
-                        Studio Nabi
-                    </Link>
-                </motion.div>
+                {/* ══ TOP: Station Branding & Menu ══ */}
+                <div className="flex justify-between items-start pointer-events-auto">
+                    <motion.div
+                        initial={{ opacity: 0, x: -12 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                        <Link href="/" className="font-pixel text-[10px] tracking-[0.2em] uppercase text-ink-muted/80 hover:text-ink transition-colors duration-300">
+                            Studio Nabi
+                        </Link>
+                    </motion.div>
 
-                {/* ══ TOP-RIGHT: Animated Dropdown Menu ══ */}
-                <motion.div
-                    className="absolute top-8 right-8 sm:right-12 lg:right-20"
-                    initial={{ opacity: 0, x: 12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                >
-                    <DropdownMenu />
-                </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, x: 12 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                        <DropdownMenu />
+                    </motion.div>
+                </div>
 
                 {/* ══ CENTER: Folio Nᵒ01 ══ */}
-                <div className="absolute inset-0 flex items-center justify-center select-none">
+                <div className="flex-1 flex items-center justify-center select-none pointer-events-none">
                     <motion.div
                         className="text-center"
-                        initial={{ opacity: 0, scale: 0.95 }}
+                        initial={{ opacity: 0, scale: 0.98 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 1.4, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                        transition={{ duration: 1.8, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
                     >
                         {/* "Folio" in display italic — physics-enabled */}
-                        <div className="font-display italic text-[clamp(3rem,8vw,7rem)] leading-[0.85] tracking-[-0.02em] text-ink/90">
+                        <div className="font-display italic text-[clamp(6rem,20vw,16rem)] leading-[0.75] tracking-[-0.04em] text-ink">
                             {folioLetters.map((letter, i) => (
                                 <span
                                     key={`f-${i}`}
@@ -270,64 +266,58 @@ export default function HeroSanctuary() {
 
                         {/* "Nᵒ01" — monospace, smaller, tracking wide */}
                         <motion.p
-                            className="font-pixel text-[clamp(0.7rem,1.5vw,1.1rem)] tracking-[0.3em] uppercase text-ink-muted mt-2"
-                            initial={{ opacity: 0, y: 10 }}
+                            className="font-pixel text-[clamp(0.8rem,2vw,1.4rem)] tracking-[0.5em] uppercase text-ink-muted/40 mt-6"
+                            initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                            transition={{ duration: 1.2, delay: 1.4, ease: [0.16, 1, 0.3, 1] }}
                         >
                             Nᵒ01
                         </motion.p>
                     </motion.div>
                 </div>
 
-                {/* ══ LEFT-CENTER: "20" ══ */}
-                <motion.div
-                    className="absolute left-8 sm:left-12 lg:left-20 top-1/2 -translate-y-1/2"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1.6, duration: 0.8 }}
-                >
-                    <span className="font-pixel text-[10px] tracking-[0.2em] uppercase text-ink-muted">
-                        20
-                    </span>
-                </motion.div>
+                {/* ══ BOTTOM: Thesis & Coordinates ══ */}
+                <div className="flex justify-between items-end">
+                    <motion.div
+                        className="max-w-[40vw]"
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                        <p className="font-display italic text-[clamp(2.5rem,5vw,4.5rem)] leading-[0.9] tracking-[-0.04em] text-ink">
+                            designing to change
+                        </p>
+                        <p className="font-pixel text-[8px] tracking-[0.2em] uppercase text-ink-muted/50 mt-4 leading-relaxed max-w-xs">
+                            Research into the kinetic behavior of digital matter. Based in Seoul.
+                        </p>
+                    </motion.div>
 
-                {/* ══ RIGHT-CENTER: "26" ══ */}
-                <motion.div
-                    className="absolute right-8 sm:right-12 lg:right-20 top-1/2 -translate-y-1/2"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1.6, duration: 0.8 }}
-                >
-                    <span className="font-pixel text-[10px] tracking-[0.2em] uppercase text-ink-muted">
-                        26
-                    </span>
-                </motion.div>
+                    <div className="flex gap-20 items-end">
+                        <motion.div
+                            className="hidden lg:block text-right"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 1.6, duration: 0.8 }}
+                        >
+                            <p className="font-pixel text-[8px] tracking-[0.3em] uppercase text-ink-faint mb-1">Index</p>
+                            <span className="font-pixel text-[10px] tracking-[0.2em] uppercase text-ink-muted">
+                                20 / 26
+                            </span>
+                        </motion.div>
 
-                {/* ══ BOTTOM-LEFT: Thesis "designing to change" ══ */}
-                <motion.div
-                    className="absolute bottom-12 sm:bottom-16 left-8 sm:left-12 lg:left-20"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                >
-                    <p className="font-display italic text-[clamp(2rem,4vw,3.5rem)] leading-[0.9] tracking-[-0.03em] text-ink/80">
-                        designing to change
-                    </p>
-                </motion.div>
-
-                {/* ══ BOTTOM-RIGHT: Coordinates ══ */}
-                <motion.div
-                    className="absolute bottom-12 sm:bottom-16 right-8 sm:right-12 lg:right-20 text-right"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 2.0, duration: 0.6 }}
-                >
-                    <p className="font-pixel text-[8px] tracking-[0.3em] uppercase text-ink-faint mb-1">Station</p>
-                    <span className="font-pixel text-[9px] tracking-[0.15em] text-ink/60 tabular-nums">
-                        37.5°N, 127.0°E
-                    </span>
-                </motion.div>
+                        <motion.div
+                            className="text-right"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 2.0, duration: 0.6 }}
+                        >
+                            <p className="font-pixel text-[8px] tracking-[0.3em] uppercase text-ink-faint mb-1">Station</p>
+                            <span className="font-pixel text-[9px] tracking-[0.15em] text-ink/60 tabular-nums inline-block min-w-[120px]">
+                                37.5°N, 127.0°E
+                            </span>
+                        </motion.div>
+                    </div>
+                </div>
 
                 {/* ─── Scroll Indicator — Bottom Center ─── */}
                 <motion.div
@@ -337,7 +327,7 @@ export default function HeroSanctuary() {
                     transition={{ delay: 2.4, duration: 0.6 }}
                 >
                     <motion.div
-                        className="w-[1px] h-10 bg-ink-faint/40 origin-top"
+                        className="w-[1px] h-10 bg-ink-faint/30 origin-top"
                         animate={{ scaleY: [0, 1, 0] }}
                         transition={{
                             duration: 2.4,

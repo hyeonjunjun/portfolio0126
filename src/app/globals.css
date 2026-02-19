@@ -28,13 +28,13 @@
   --font-pixel: var(--font-pixel);
   --font-dot: var(--font-dot);
 
-  --color-canvas: #fafafa;
-  --color-ink: #1a1a1a;
-  --color-ink-muted: #6B6B6B;
-  --color-ink-faint: #9A9A9A;
-  --color-border: #D8D8D8;
-  --color-accent: #8B9E6B;
-  --color-accent-muted: #A3B585;
+  --color-canvas: #ffffff;
+  --color-ink: #000000;
+  --color-ink-muted: #4a4a4a;
+  --color-ink-faint: #b4b4b4;
+  --color-border: #eeeeee;
+  --color-accent: #8b9e6b;
+  --color-accent-muted: #a3b585;
 }
 
 /* ─── Base ─── */
