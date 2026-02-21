@@ -13,8 +13,7 @@ import Image from "next/image";
  */
 
 const LINES = [
-    { text: "Hi — I'm Ryan,", highlight: false },
-    { text: "Design Engineer.", highlight: true },
+    { text: "I'm Ryan, Design Engineer.", highlight: false },
     { text: "NYC-based, crafting", highlight: false },
     { text: "products that live at the", highlight: false },
     { text: "intersection of taste,", highlight: false },
