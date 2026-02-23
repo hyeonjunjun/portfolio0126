@@ -80,6 +80,7 @@ export default function SpecimenRow({ project, index }: SpecimenRowProps) {
             <Link
                 href={`/work/${project.id}`}
                 className="group block relative border-b border-ink/[0.06] overflow-visible"
+                data-cursor="view"
                 onMouseMove={handleMouseMove}
                 onMouseEnter={() => {
                     setIsHovered(true);

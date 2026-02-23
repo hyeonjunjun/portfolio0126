@@ -31,7 +31,7 @@ const NAV_ITEMS = [
 const containerVariants = {
     hidden: {},
     visible: {
-        transition: { staggerChildren: 0.12, delayChildren: 0.6 },
+        transition: { staggerChildren: 0.1, delayChildren: 0.4 },
     },
 };
 
@@ -40,7 +40,7 @@ const lineReveal = {
     visible: {
         y: "0%",
         opacity: 1,
-        transition: { duration: 1, ease: [0.16, 1, 0.3, 1] as const },
+        transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] as const },
     },
 };
 
@@ -262,7 +262,7 @@ export default function HeroSanctuary() {
                         className="max-w-[50vw] lg:max-w-xs"
                         initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 1.6, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        transition={{ delay: 0.9, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                     >
                         <p className="font-pixel text-[9px] sm:text-[10px] tracking-[0.15em] uppercase text-ink-muted leading-relaxed">
                             Building digital experiences at the
@@ -276,7 +276,7 @@ export default function HeroSanctuary() {
                         className="text-right"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ delay: 2.0, duration: 0.8 }}
+                        transition={{ delay: 1.1, duration: 0.6 }}
                     >
                         <p className="font-pixel text-[8px] tracking-[0.3em] uppercase text-ink-faint mb-1">
                             Station
@@ -292,7 +292,7 @@ export default function HeroSanctuary() {
                     className="absolute bottom-6 left-1/2 -translate-x-1/2"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 2.4, duration: 0.6 }}
+                    transition={{ delay: 1.4, duration: 0.5 }}
                 >
                     <motion.div
                         className="w-[1px] h-8 bg-ink-faint/40 origin-top"

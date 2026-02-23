@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring, useScroll, useTransform } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { PROJECTS } from "@/constants/projects";
 import Link from "next/link";
@@ -21,8 +21,18 @@ function WorkRow({ project, index, onHover, onLeave }: {
     onHover: (img: string) => void;
     onLeave: () => void;
 }) {
+    const rowRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: rowRef,
+        offset: ["start end", "end start"],
+    });
+
+    // Subtle vertical parallax — each row drifts slightly as it scrolls through viewport
+    const parallaxY = useTransform(scrollYProgress, [0, 1], [12, -12]);
+
     return (
         <motion.div
+            ref={rowRef}
             className="border-b border-ink/[0.08] last:border-b-0 transition-all duration-500 group-hover/list:opacity-40 hover:!opacity-100 hover:translate-x-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -32,10 +42,12 @@ function WorkRow({ project, index, onHover, onLeave }: {
                 delay: index * 0.08,
                 ease: [0.16, 1, 0.3, 1],
             }}
+            style={{ y: parallaxY }}
         >
             <Link
                 href={`/work/${project.id}`}
                 className="group block"
+                data-cursor="view"
                 onMouseEnter={() => onHover(project.image)}
                 onMouseLeave={onLeave}
             >
@@ -98,6 +110,8 @@ export default function WorkIndex() {
     const mouseY = useMotionValue(0);
     const imgX = useSpring(mouseX, { damping: 25, stiffness: 200, mass: 0.5 });
     const imgY = useSpring(mouseY, { damping: 25, stiffness: 200, mass: 0.5 });
+
+
 
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
@@ -186,6 +200,6 @@ export default function WorkIndex() {
                     </motion.div>
                 </div>
             </div>
-        </section>
+        </section >
     );
 }

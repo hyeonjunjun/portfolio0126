@@ -7,8 +7,9 @@ import { useInView } from "react-intersection-observer";
 /**
  * PhilosophyStrip
  * ───────────────
- * Horizontal marquee ticker with hover-pause.
- * Pauses on hover (Lightweight-inspired), resumes on leave.
+ * Horizontal marquee ticker with hover-pause and subtle scale lift.
+ * Rests at a gentle scale(0.98), springs to 1.0 on hover
+ * for an organic, non-mechanical feel without any 3D distortion.
  */
 
 const PHRASES = [
@@ -52,9 +53,13 @@ export default function PhilosophyStrip() {
         >
             <motion.div
                 className="flex"
-                initial={{ opacity: 0 }}
-                animate={inView ? { opacity: 1 } : {}}
-                transition={{ duration: 1 }}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={inView ? { opacity: 1, scale: isPaused ? 1 : 0.98 } : {}}
+                transition={{
+                    opacity: { duration: 1 },
+                    scale: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+                }}
+                style={{ transformOrigin: "center center" }}
             >
                 {/* Two copies for seamless loop */}
                 <div className={`flex items-center gap-8 animate-marquee ${isPaused ? "animate-marquee-paused" : ""}`}>

@@ -37,12 +37,16 @@ export default function IntroStatement() {
     // Subdued butterfly parallax in background
     const butterflyX = useTransform(smoothProgress, [0, 1], ["2%", "8%"]);
     const butterflyOpacity = useTransform(smoothProgress, [0.2, 0.4, 0.7, 0.9], [0, 0.12, 0.12, 0]);
+    // Curtain reveal — clipPath driven by section entering viewport
+    const clipProgress = useTransform(scrollYProgress, [0, 0.15], [100, 0]);
+    const clipPath = useTransform(clipProgress, (v) => `inset(${v}% 0 0 0)`);
 
     return (
-        <section
+        <motion.section
             id="about"
             ref={containerRef}
             className="relative py-32 sm:py-48 lg:py-64 px-6 sm:px-12 lg:px-20 overflow-hidden bg-canvas border-t border-ink/[0.03]"
+            style={{ clipPath }}
         >
             {/* ─── Background Layer: Continuity Line ─── */}
             <div className="absolute left-6 sm:left-12 lg:left-20 top-0 bottom-0 w-px bg-ink/[0.06] z-0" />
@@ -131,7 +135,7 @@ export default function IntroStatement() {
                     </motion.div>
                 </div>
             </div>
-        </section>
+        </motion.section>
     );
 }
 

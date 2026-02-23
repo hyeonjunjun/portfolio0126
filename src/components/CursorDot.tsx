@@ -4,12 +4,19 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 
 /**
- * CursorDot — Bio-Digital Combo
- * ─────────────────────────────
- * A dual-cursor system:
- * 1. Flower: Tightly follows the hardware cursor (the "target").
+ * CursorDot — Bio-Digital Combo + Contextual States
+ * ──────────────────────────────────────────────────
+ * A dual-cursor system with contextual morphing:
+ * 1. Flower: Tightly follows hardware cursor (the "target").
  * 2. Butterfly: Trails behind with spring physics + rotation (the "pollinator").
+ *
+ * States:
+ *   - "default"  → Standard flower + butterfly
+ *   - "link"     → Flower scales up with accent ring
+ *   - "view"     → Flower morphs into a "View" text pill
  */
+
+type CursorState = "default" | "link" | "view";
 
 /* ─── Flower Frames (9x9) ─── */
 const FLOWER_FRAME: [number, number][] = [
@@ -70,7 +77,7 @@ export default function CursorDot() {
     const butterflyX = useSpring(cursorX, springConfig);
     const butterflyY = useSpring(cursorY, springConfig);
 
-    const [isHovering, setIsHovering] = useState(false);
+    const [cursorState, setCursorState] = useState<CursorState>("default");
     const [isVisible, setIsVisible] = useState(false);
     const [frame, setFrame] = useState(0);
     const [rotation, setRotation] = useState(0);
@@ -80,6 +87,8 @@ export default function CursorDot() {
     const lastParticlePos = useRef({ x: 0, y: 0 });
     const prevButterflyPos = useRef({ x: 0, y: 0 });
     const velocity = useRef(0);
+
+    const isHovering = cursorState !== "default";
 
     // Butterfly Flap Animation
     useEffect(() => {
@@ -115,10 +124,24 @@ export default function CursorDot() {
 
         const handleMouseOver = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
+
+            // Check for "view" state first (work rows)
+            const viewTarget = target.closest("[data-cursor='view']");
+            if (viewTarget) {
+                setCursorState("view");
+                return;
+            }
+
+            // Check for standard interactive elements (links, buttons)
             const interactive = target.closest(
                 "a, button, [role='button'], input, textarea, select, [data-cursor-grow]"
             );
-            setIsHovering(!!interactive);
+            if (interactive) {
+                setCursorState("link");
+                return;
+            }
+
+            setCursorState("default");
         };
 
         window.addEventListener("mousemove", moveCursor, { passive: true });
@@ -170,7 +193,7 @@ export default function CursorDot() {
     const PIXEL_SIZE = 2; // Fixed size
     const butterflyPixels = frame === 0 ? BUTTERFLY_A : BUTTERFLY_B;
     const butterflyShadow = pixelsToBoxShadow(butterflyPixels, PIXEL_SIZE, "currentColor");
-    const flowerShadow = pixelsToBoxShadow(FLOWER_FRAME, PIXEL_SIZE, isHovering ? "var(--color-accent)" : "currentColor");
+    const flowerShadow = pixelsToBoxShadow(FLOWER_FRAME, PIXEL_SIZE, cursorState === "link" ? "var(--color-accent)" : "currentColor");
 
     return (
         <>
@@ -206,6 +229,11 @@ export default function CursorDot() {
                     translateY: `${-5 * PIXEL_SIZE}px`,
                     rotate: rotation,
                 }}
+                animate={{
+                    opacity: cursorState === "view" ? 0.15 : 1,
+                    scale: cursorState === "view" ? 0.6 : 1,
+                }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             >
                 <div
                     style={{
@@ -217,26 +245,95 @@ export default function CursorDot() {
                 />
             </motion.div>
 
-            {/* Flower (Leader / Cursor) */}
-            <motion.div
-                className="fixed top-0 left-0 pointer-events-none z-[9999] text-ink"
-                style={{
-                    x: cursorX,
-                    y: cursorY,
-                    translateX: `${-4.5 * PIXEL_SIZE}px`, // Center 9x9
-                    translateY: `${-4.5 * PIXEL_SIZE}px`,
-                }}
-            >
-                <div
-                    style={{
-                        width: `${PIXEL_SIZE}px`,
-                        height: `${PIXEL_SIZE}px`,
-                        boxShadow: flowerShadow,
-                        imageRendering: "pixelated",
-                        transition: "color 0.2s",
-                    }}
-                />
-            </motion.div>
+            {/* ─── Leader Cursor: Contextual States ─── */}
+            <AnimatePresence mode="wait">
+                {cursorState === "view" ? (
+                    /* "View" Pill — replaces the flower on work rows */
+                    <motion.div
+                        key="view-pill"
+                        className="fixed top-0 left-0 pointer-events-none z-[9999] flex items-center justify-center"
+                        style={{
+                            x: cursorX,
+                            y: cursorY,
+                            translateX: "-50%",
+                            translateY: "-50%",
+                        }}
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                        <div className="bg-ink text-canvas px-4 py-1.5 rounded-full">
+                            <span className="font-pixel text-[9px] tracking-[0.2em] uppercase">
+                                View
+                            </span>
+                        </div>
+                    </motion.div>
+                ) : cursorState === "link" ? (
+                    /* Accent Ring — enlarged flower with glow ring on interactive elements */
+                    <motion.div
+                        key="link-ring"
+                        className="fixed top-0 left-0 pointer-events-none z-[9999] text-ink"
+                        style={{
+                            x: cursorX,
+                            y: cursorY,
+                            translateX: `${-4.5 * PIXEL_SIZE}px`,
+                            translateY: `${-4.5 * PIXEL_SIZE}px`,
+                        }}
+                        initial={{ scale: 1 }}
+                        animate={{ scale: 1.4 }}
+                        exit={{ scale: 1 }}
+                        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                        <div
+                            style={{
+                                width: `${PIXEL_SIZE}px`,
+                                height: `${PIXEL_SIZE}px`,
+                                boxShadow: flowerShadow,
+                                imageRendering: "pixelated",
+                                transition: "color 0.2s",
+                            }}
+                        />
+                        {/* Accent ring */}
+                        <div
+                            className="absolute rounded-full border border-accent/40"
+                            style={{
+                                width: "32px",
+                                height: "32px",
+                                top: "50%",
+                                left: "50%",
+                                transform: "translate(-50%, -50%)",
+                            }}
+                        />
+                    </motion.div>
+                ) : (
+                    /* Default Flower */
+                    <motion.div
+                        key="flower-default"
+                        className="fixed top-0 left-0 pointer-events-none z-[9999] text-ink"
+                        style={{
+                            x: cursorX,
+                            y: cursorY,
+                            translateX: `${-4.5 * PIXEL_SIZE}px`,
+                            translateY: `${-4.5 * PIXEL_SIZE}px`,
+                        }}
+                        initial={{ scale: 1, opacity: 1 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.5, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        <div
+                            style={{
+                                width: `${PIXEL_SIZE}px`,
+                                height: `${PIXEL_SIZE}px`,
+                                boxShadow: flowerShadow,
+                                imageRendering: "pixelated",
+                                transition: "color 0.2s",
+                            }}
+                        />
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </>
     );
 }
