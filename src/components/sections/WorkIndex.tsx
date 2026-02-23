@@ -101,10 +101,8 @@ export default function WorkIndex() {
 
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
-            if (!containerRef.current) return;
-            const rect = containerRef.current.getBoundingClientRect();
-            mouseX.set(e.clientX - rect.left);
-            mouseY.set(e.clientY - rect.top);
+            mouseX.set(e.clientX);
+            mouseY.set(e.clientY);
         };
 
         const container = containerRef.current;
@@ -119,8 +117,11 @@ export default function WorkIndex() {
     }, [mouseX, mouseY]);
 
     return (
-        <section id="work" className="py-24 sm:py-32 lg:py-40">
-            <div className="px-6 sm:px-12 lg:px-20">
+        <section id="work" className="relative py-24 sm:py-32 lg:py-40">
+            {/* ─── Background Layer: Continuity Line ─── */}
+            <div className="absolute left-6 sm:left-12 lg:left-20 top-0 bottom-0 w-px bg-ink/[0.06] z-0" />
+
+            <div className="px-6 sm:px-12 lg:px-20 relative z-10">
                 {/* Section Header */}
                 <motion.div
                     ref={headerRef}
@@ -151,34 +152,36 @@ export default function WorkIndex() {
                         />
                     ))}
 
-                    {/* Floating cursor-following image */}
+                    {/* Floating cursor-following image (Fixed for better precision) */}
                     <motion.div
-                        className="absolute top-0 left-0 pointer-events-none z-30 hidden lg:block"
+                        className="fixed top-0 left-0 pointer-events-none z-[100] hidden lg:block"
                         style={{
                             x: imgX,
                             y: imgY,
-                            translateX: "-50%",
-                            translateY: "-60%",
+                            translateX: "40px",
+                            translateY: "-50%",
                         }}
                         animate={{
                             opacity: hoveredImage ? 1 : 0,
                             scale: hoveredImage ? 1 : 0.85,
                         }}
                         transition={{
-                            opacity: { duration: 0.25 },
-                            scale: { type: "spring", stiffness: 300, damping: 25 },
+                            opacity: { duration: 0.2 },
+                            scale: { type: "spring", stiffness: 350, damping: 25 },
                         }}
                     >
-                        <div className="w-[280px] h-[180px] rounded-lg overflow-hidden shadow-2xl shadow-ink/10 ring-1 ring-ink/[0.04]">
+                        <div className="relative w-[320px] h-[200px] rounded-lg overflow-hidden shadow-2xl shadow-ink/20 ring-1 ring-ink/[0.04] bg-canvas">
                             {hoveredImage && (
                                 <Image
                                     src={hoveredImage}
                                     alt=""
                                     fill
                                     className="object-cover"
-                                    sizes="280px"
+                                    sizes="320px"
                                 />
                             )}
+                            {/* Static-like overlay for technical feel */}
+                            <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.02)_50%),linear-gradient(90deg,rgba(139,158,107,0.02),rgba(0,255,0,0.01),rgba(0,0,255,0.02))] z-10 bg-[length:100%_2px,3px_100%]" />
                         </div>
                     </motion.div>
                 </div>

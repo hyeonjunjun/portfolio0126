@@ -90,6 +90,8 @@ export default function HeroSanctuary() {
             ref={ref}
             className="relative h-screen overflow-hidden bg-canvas"
         >
+            {/* ─── Background Layer: Continuity Line ─── */}
+            <div className="absolute left-6 sm:left-12 lg:left-20 top-1/2 bottom-0 w-px bg-ink/[0.06] z-0" />
             {/* ─── Cinematic Atmosphere (Video) ─── */}
             <motion.div
                 className="absolute inset-0 z-0 select-none pointer-events-none"

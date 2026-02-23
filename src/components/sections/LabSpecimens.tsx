@@ -18,8 +18,11 @@ export default function LabSpecimens() {
     });
 
     return (
-        <section className="py-24 sm:py-32">
-            <div className="px-6 sm:px-12 lg:px-20 mb-12">
+        <section className="relative py-24 sm:py-32">
+            {/* ─── Background Layer: Continuity Line ─── */}
+            <div className="absolute left-6 sm:left-12 lg:left-20 top-0 bottom-0 w-px bg-ink/[0.06] z-0" />
+
+            <div className="px-6 sm:px-12 lg:px-20 relative z-10 mb-12">
                 {/* ─── Korean Cultural Label ─── */}
                 <div className="font-dot text-[10px] text-accent mb-4">﹁작품﹂</div>
 

@@ -1,6 +1,8 @@
 import HeroSanctuary from "@/components/sections/HeroSanctuary";
 import IntroStatement from "@/components/sections/IntroStatement";
 import WorkIndex from "@/components/sections/WorkIndex";
+import LabSpecimens from "@/components/sections/LabSpecimens";
+import PhilosophyStrip from "@/components/sections/PhilosophyStrip";
 import Colophon from "@/components/sections/Colophon";
 import StickyNav from "@/components/StickyNav";
 
@@ -11,6 +13,7 @@ export default function Home() {
       <HeroSanctuary />
       <IntroStatement />
       <WorkIndex />
+      <PhilosophyStrip />
       <Colophon />
     </main>
   );

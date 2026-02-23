@@ -32,12 +32,7 @@ export default function Colophon() {
                     <h4 className="font-pixel text-[9px] tracking-[0.25em] uppercase text-ink-faint mb-6">
                         Contact
                     </h4>
-                    <a
-                        href="mailto:stuuudionabi@gmail.com"
-                        className="font-display italic text-[clamp(1.2rem,2.5vw,1.8rem)] text-ink hover:text-accent transition-colors duration-300 block mb-4"
-                    >
-                        stuuudionabi@gmail.com
-                    </a>
+                    <EmailLink />
                     <div className="flex gap-6 mt-6">
                         {[
                             { label: "LinkedIn", href: "https://www.linkedin.com/in/ryan-jun-" },
@@ -102,6 +97,59 @@ export default function Colophon() {
                 </p>
             </div>
         </footer>
+    );
+}
+
+/**
+ * EmailLink — Per-letter 3D rotateX flip on hover, staggered cascade.
+ */
+function EmailLink() {
+    const [isHovered, setIsHovered] = useState(false);
+    const email = "stuuudionabi@gmail.com";
+    const chars = email.split("");
+    const STAGGER = 0.02; // seconds between each letter
+
+    return (
+        <a
+            href={`mailto:${email}`}
+            className="block mb-4 cursor-pointer"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            style={{ perspective: "800px" }}
+        >
+            <span className="flex flex-wrap">
+                {chars.map((char, i) => (
+                    <motion.span
+                        key={`${char}-${i}`}
+                        className="font-display italic text-[clamp(1.2rem,2.5vw,1.8rem)] text-ink inline-block"
+                        style={{
+                            transformStyle: "preserve-3d",
+                            whiteSpace: "pre",
+                        }}
+                        animate={{
+                            rotateX: isHovered ? 360 : 0,
+                            color: isHovered
+                                ? "var(--color-accent, #8b9e6b)"
+                                : "var(--color-ink, #1a1a1a)",
+                        }}
+                        transition={{
+                            rotateX: {
+                                duration: 0.6,
+                                delay: i * STAGGER,
+                                ease: [0.16, 1, 0.3, 1],
+                            },
+                            color: {
+                                duration: 0.3,
+                                delay: i * STAGGER,
+                                ease: "easeOut",
+                            },
+                        }}
+                    >
+                        {char}
+                    </motion.span>
+                ))}
+            </span>
+        </a>
     );
 }
 
