@@ -21,10 +21,10 @@ function ProjectCard({ project, index }: { project: any; index: number }) {
         >
             <Link
                 href={`/work/${project.id}`}
-                className="block bg-ink/[0.03] hover:bg-ink/[0.05] transition-colors duration-500 rounded-[24px] p-2"
+                className="block bg-ink/[0.03] hover:bg-ink/[0.05] transition-colors duration-500 rounded-sm p-2"
             >
                 {/* Image Container */}
-                <div className="relative w-full aspect-[4/3] rounded-[18px] overflow-hidden bg-ink/[0.05]">
+                <div className="relative w-full aspect-[4/3] rounded-sm overflow-hidden bg-ink/[0.05]">
                     <Image
                         src={imageUrl}
                         alt={project.title}
@@ -37,7 +37,7 @@ function ProjectCard({ project, index }: { project: any; index: number }) {
                 {/* Content Container */}
                 <div className="px-4 py-5 flex items-start justify-between">
                     <div className="flex flex-col gap-1 pr-6">
-                        <h3 className="font-sans font-medium text-ink">
+                        <h3 className="font-display italic text-2xl text-ink">
                             {project.title}
                         </h3>
                         <p className="font-sans text-sm text-ink-muted leading-snug">

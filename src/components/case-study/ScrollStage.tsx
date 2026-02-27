@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion, useScroll, useSpring, useMotionValue, useTransform } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import type { Project, ProjectHighlight } from "@/constants/projects";
 import { PROJECTS } from "@/constants/projects";
@@ -286,8 +286,27 @@ function HighlightSection({ highlight, index, id }: { highlight: ProjectHighligh
 
 export default function ScrollStage({ project }: ScrollStageProps) {
     const [activeSection, setActiveSection] = useState("overview");
+    const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll();
     const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
+    /* ─── Cursor tracking for light spot (Hero continuity) ─── */
+    const rawX = useMotionValue(0.5);
+    const rawY = useMotionValue(0.5);
+    const spotX = useSpring(rawX, { damping: 40, stiffness: 120, mass: 0.8 });
+    const spotY = useSpring(rawY, { damping: 40, stiffness: 120, mass: 0.8 });
+
+    useEffect(() => {
+        const handleMove = (e: MouseEvent) => {
+            const nx = e.clientX / window.innerWidth;
+            const ny = e.clientY / window.innerHeight;
+            rawX.set(nx);
+            rawY.set(ny);
+        };
+
+        window.addEventListener("mousemove", handleMove, { passive: true });
+        return () => window.removeEventListener("mousemove", handleMove);
+    }, [rawX, rawY]);
 
     const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.2 });
     const [metaRef, metaInView] = useInView({ triggerOnce: true, threshold: 0.3 });
@@ -319,7 +338,19 @@ export default function ScrollStage({ project }: ScrollStageProps) {
     const nextProject = PROJECTS[(currentIndex + 1) % PROJECTS.length] || PROJECTS[0];
 
     return (
-        <div className="min-h-screen bg-canvas selection:bg-accent selection:text-white">
+        <div ref={containerRef} className="min-h-screen bg-canvas selection:bg-accent selection:text-white relative overflow-hidden">
+            {/* ─── Cursor Light Spot (Subtle Sanctuary Persistence) ─── */}
+            <motion.div
+                className="fixed inset-0 pointer-events-none z-[1]"
+                style={{
+                    background: useTransform(
+                        [spotX, spotY],
+                        ([x, y]: number[]) =>
+                            `radial-gradient(800px circle at ${(x as number) * 100}% ${(y as number) * 100}%, rgba(139,158,107,0.04) 0%, rgba(139,158,107,0.01) 40%, transparent 80%)`
+                    ),
+                }}
+            />
+
             {/* Progress Bar */}
             <motion.div className="fixed top-0 left-0 right-0 h-[2px] bg-accent z-[100] origin-left" style={{ scaleX }} />
 
