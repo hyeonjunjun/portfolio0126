@@ -17,11 +17,10 @@ function ProjectGridItem({ project, index }: { project: (typeof PROJECTS)[0]; in
     const itemRef = useRef<HTMLDivElement>(null);
     const { ref: inViewRef, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
-    // Determine aspect ratio/size for "Asymmetrical Rhythm"
-    const isLarge = index === 0; // First item is the centerpiece
-    const isPortrait = index % 3 === 1; // Middle items of rhythmic rows are portrait
+    const isLarge = index === 0;
+    const isPortrait = index % 3 === 1;
+    const isComingSoon = project.tags.includes("Coming Soon");
 
-    // Merge refs
     const setRefs = (node: HTMLDivElement) => {
         itemRef.current = node;
         inViewRef(node);
@@ -30,9 +29,9 @@ function ProjectGridItem({ project, index }: { project: (typeof PROJECTS)[0]; in
     return (
         <motion.div
             ref={setRefs}
-            className={`group relative overflow-hidden rounded-sm bg-ink/[0.03] transition-all duration-[1200ms] ${isLarge ? "lg:col-span-8 lg:row-span-2 aspect-[4/3] lg:aspect-auto" :
-                    isPortrait ? "lg:col-span-4 aspect-[4/5]" :
-                        "lg:col-span-4 aspect-[16/10]"
+            className={`flex flex-col gap-4 ${isLarge ? "lg:col-span-8 lg:row-span-2" :
+                isPortrait ? "lg:col-span-4" :
+                    "lg:col-span-4"
                 }`}
             initial={{ opacity: 0, y: 40 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -42,19 +41,31 @@ function ProjectGridItem({ project, index }: { project: (typeof PROJECTS)[0]; in
                 ease: [0.16, 1, 0.3, 1],
             }}
         >
-            <Link href={`/work/${project.id}`} className="block w-full h-full group/link">
+            <Link
+                href={isComingSoon ? "#work" : `/work/${project.id}`}
+                className={`group/link relative block w-full overflow-hidden rounded-sm bg-ink/[0.03] transition-all duration-[1200ms] ${isLarge ? "aspect-[4/3] lg:aspect-auto lg:h-[calc(100%-3rem)]" :
+                    isPortrait ? "aspect-[4/5]" :
+                        "aspect-[16/10]"
+                    } ${isComingSoon ? "cursor-default" : "cursor-pointer"}`}
+            >
                 {/* Background Image with Slow Zoom */}
-                <div className="absolute inset-0 z-0">
+                <div className={`absolute inset-0 z-0 ${isComingSoon ? "grayscale opacity-60" : ""}`}>
                     <Image
                         src={project.image}
                         alt={project.title}
                         fill
                         className="object-cover transition-transform duration-[4000ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:scale-110"
-                        sizes="(max-width: 1024px) 100vw, 33vw"
-                        priority={index < 3}
+                        sizes={isLarge
+                            ? "(max-width: 1024px) 100vw, (max-width: 1536px) 66vw, 1200px"
+                            : "(max-width: 1024px) 100vw, (max-width: 1536px) 33vw, 600px"
+                        }
+                        quality={90}
+                        priority={index < 2}
                     />
-                    {/* Atmospheric Dark Overlay (Fades in on hover) */}
-                    <div className="absolute inset-0 bg-ink opacity-0 group-hover/link:opacity-40 transition-opacity duration-1000 z-10" />
+                    {/* Atmospheric Dark Overlay */}
+                    {!isComingSoon && (
+                        <div className="absolute inset-0 bg-ink opacity-0 group-hover/link:opacity-40 transition-opacity duration-1000 z-10" />
+                    )}
                 </div>
 
                 {/* Technical Meta Tag (Always visible) */}
@@ -65,36 +76,69 @@ function ProjectGridItem({ project, index }: { project: (typeof PROJECTS)[0]; in
                     <div className="w-6 h-px bg-white/10 group-hover/link:w-12 group-hover/link:bg-accent transition-all duration-700" />
                 </div>
 
-                {/* Content Overlay (Centered & Massive on Hover) */}
-                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-8 opacity-0 group-hover/link:opacity-100 transition-opacity duration-1000">
-                    <motion.div
-                        className="text-center"
-                        initial={{ y: 20 }}
-                        whileHover={{ y: 0 }}
-                    >
-                        <h3 className="font-display italic text-[clamp(2rem,6vw,5rem)] leading-none tracking-[-0.04em] text-white selection:bg-accent selection:text-white mb-4">
-                            {project.title}
-                        </h3>
-                        <div className="flex items-center justify-center gap-4">
-                            <span className="font-pixel text-[8px] tracking-[0.3em] uppercase text-white/60">{project.sector}</span>
-                            <div className="w-3 h-3 rounded-full border border-white/20 flex items-center justify-center">
-                                <div className="w-1 h-1 bg-accent rounded-full animate-pulse" />
-                            </div>
-                            <span className="font-pixel text-[8px] tracking-[0.3em] uppercase text-white/60">{project.year}</span>
+                {/* Coming Soon Indicator */}
+                {isComingSoon && (
+                    <div className="absolute inset-0 z-20 flex items-center justify-center p-8 bg-ink/10 backdrop-blur-[2px]">
+                        <div className="px-4 py-2 border border-white/20 rounded-full">
+                            <span className="font-pixel text-[8px] tracking-[0.3em] uppercase text-white/80">In Progress</span>
                         </div>
-                    </motion.div>
-                </div>
+                    </div>
+                )}
+
+                {/* Content Overlay (Centered & Massive on Hover) - Only for active projects */}
+                {!isComingSoon && (
+                    <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-8 opacity-0 group-hover/link:opacity-100 transition-opacity duration-1000">
+                        <motion.div
+                            className="text-center"
+                            initial={{ y: 20 }}
+                            whileHover={{ y: 0 }}
+                        >
+                            <h3 className="font-display italic text-[clamp(2rem,6vw,5rem)] leading-none tracking-[-0.04em] text-white selection:bg-accent selection:text-white mb-4">
+                                {project.title}
+                            </h3>
+                            <div className="flex items-center justify-center gap-4">
+                                <span className="font-pixel text-[8px] tracking-[0.3em] uppercase text-white/60">{project.sector}</span>
+                                <div className="w-3 h-3 rounded-full border border-white/20 flex items-center justify-center">
+                                    <div className="w-1 h-1 bg-accent rounded-full animate-pulse" />
+                                </div>
+                                <span className="font-pixel text-[8px] tracking-[0.3em] uppercase text-white/60">{project.year}</span>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
 
                 {/* Bottom Corner Label (Technical Spec) */}
-                <div className="absolute bottom-6 left-6 z-20 pointer-events-none group-hover/link:translate-x-2 transition-transform duration-700">
-                    <span className="font-sans text-[10px] uppercase tracking-widest text-white/0 group-hover/link:text-white/60 transition-colors duration-1000">
-                        VIEW PROJECT —&gt;
-                    </span>
-                </div>
+                {!isComingSoon && (
+                    <div className="absolute bottom-6 left-6 z-20 pointer-events-none group-hover/link:translate-x-2 transition-transform duration-700">
+                        <span className="font-sans text-[10px] uppercase tracking-widest text-white/0 group-hover/link:text-white/60 transition-colors duration-1000">
+                            VIEW PROJECT —&gt;
+                        </span>
+                    </div>
+                )}
+
+                {/* Grain Texture Overlay */}
+                <div className="absolute inset-0 pointer-events-none z-30 opacity-[0.05] bg-noise" />
             </Link>
 
-            {/* Grain Texture Overlay */}
-            <div className="absolute inset-0 pointer-events-none z-30 opacity-[0.05] bg-noise" />
+            {/* ─── Studio Dado Style Metadata ─── */}
+            <div className="flex justify-between items-start pt-1 group-hover:px-1 transition-all duration-700">
+                <div className="flex flex-col gap-1">
+                    <h4 className="font-sans font-medium text-[11px] lg:text-[13px] tracking-tight text-ink uppercase">
+                        {project.title}
+                    </h4>
+                    {isComingSoon && (
+                        <div className="flex items-center gap-2">
+                            <div className="w-1 h-1 bg-accent rounded-full animate-pulse" />
+                            <span className="font-pixel text-[7px] tracking-[0.2em] text-accent uppercase">Phase.01</span>
+                        </div>
+                    )}
+                </div>
+                <div className="text-right">
+                    <span className="font-sans text-[10px] lg:text-[11px] font-light tracking-widest text-ink-muted/60 uppercase">
+                        {project.sector}
+                    </span>
+                </div>
+            </div>
         </motion.div>
     );
 }

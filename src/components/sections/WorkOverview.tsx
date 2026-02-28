@@ -30,7 +30,8 @@ function ProjectCard({ project, index }: { project: any; index: number }) {
                         alt={project.title}
                         fill
                         className="object-cover transition-transform duration-[1.2s] ease-[0.16,1,0.3,1] group-hover:scale-[1.03]"
-                        sizes="(max-width: 768px) 100vw, 50vw"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 400px"
+                        quality={90}
                     />
                 </div>
 

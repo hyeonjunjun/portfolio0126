@@ -13,15 +13,28 @@ import Image from "next/image";
  */
 
 const LINES = [
-    { text: "Studio Nabi — Ryan Jun.", highlight: true, scribble: "underline" },
-    { text: "Crafting digital nature", highlight: false },
-    { text: "at the intersection of", highlight: false },
-    { text: "taste, technical stories,", highlight: false },
-    { text: "and precise craftsmanship.", highlight: true, scribble: "circle" },
+    { text: "Studio Nabi is the creative vessel", highlight: true, scribble: "underline" },
+    { text: "of Ryan Jun. Based in New York,", highlight: false },
+    { text: "I build digital habitats—interfaces", highlight: false },
+    { text: "that blend technical precision", highlight: false },
+    { text: "with an inherently human soul.", highlight: true, scribble: "circle" },
 ];
+
+import { useState, useEffect } from "react";
 
 export default function IntroStatement() {
     const containerRef = useRef<HTMLDivElement>(null);
+    const [time, setTime] = useState<string>("");
+
+    useEffect(() => {
+        const updateTime = () => {
+            const now = new Date();
+            setTime(now.toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour12: false, hour: '2-digit', minute: '2-digit' }));
+        };
+        updateTime();
+        const interval = setInterval(updateTime, 60000);
+        return () => clearInterval(interval);
+    }, []);
 
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -34,10 +47,8 @@ export default function IntroStatement() {
         restDelta: 0.001
     });
 
-    // Subdued butterfly parallax in background
     const butterflyX = useTransform(smoothProgress, [0, 1], ["2%", "8%"]);
     const butterflyOpacity = useTransform(smoothProgress, [0.2, 0.4, 0.7, 0.9], [0, 0.12, 0.12, 0]);
-    // Curtain reveal — clipPath driven by section entering viewport
     const clipProgress = useTransform(scrollYProgress, [0, 0.15], [100, 0]);
     const clipPath = useTransform(clipProgress, (v) => `inset(${v}% 0 0 0)`);
 
@@ -73,18 +84,42 @@ export default function IntroStatement() {
             {/* ─── 12-Column Grid Layout ─── */}
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 sm:gap-20">
 
-                {/* Left Column (cols 1-4): Metadata & Anchors */}
-                <div className="lg:col-span-4 flex flex-col gap-12 lg:pl-8">
-                    <div>
-                        <div className="font-dot text-[10px] text-accent mb-4">﹂소개﹂</div>
-                        <h2 className="font-pixel text-[9px] tracking-[0.3em] uppercase text-ink-faint">
-                            01 / Manifesto
-                        </h2>
+                {/* Left Column (cols 1-4): Personable Metadata */}
+                <div className="lg:col-span-4 flex flex-col justify-between py-2 lg:pl-8">
+                    <div className="space-y-12">
+                        <div>
+                            <div className="font-dot text-[10px] text-accent mb-4">﹂소개﹂</div>
+                            <h2 className="font-pixel text-[9px] tracking-[0.3em] uppercase text-ink-faint">
+                                01 / Identity
+                            </h2>
+                        </div>
+
+                        <div className="space-y-8">
+                            <div className="flex flex-col gap-1">
+                                <span className="font-pixel text-[8px] text-ink-faint tracking-widest uppercase mb-1">Status</span>
+                                <div className="flex items-center gap-3">
+                                    <span className="relative flex h-1.5 w-1.5">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent"></span>
+                                    </span>
+                                    <span className="font-sans text-[11px] text-ink uppercase tracking-tight">Prototyping in NYC</span>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col gap-1">
+                                <span className="font-pixel text-[8px] text-ink-faint tracking-widest uppercase mb-1">Local Time</span>
+                                <span className="font-sans text-[11px] text-ink uppercase tracking-tight tabular-nums">{time || "21:23"} EST</span>
+                            </div>
+
+                            <div className="flex flex-col gap-1">
+                                <span className="font-pixel text-[8px] text-ink-faint tracking-widest uppercase mb-1">Availability</span>
+                                <span className="font-sans text-[11px] text-accent uppercase tracking-tight">Select Projects Q3 2026</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div className="hidden lg:block space-y-8">
-                        <div className="h-[240px] w-px bg-ink/[0.06] ml-1" />
-                        <div className="flex flex-col gap-4">
+                    <div className="hidden lg:block pt-12">
+                        <div className="flex flex-col gap-4 border-l border-ink/[0.06] pl-6">
                             <span className="font-pixel text-[8px] text-ink-faint tracking-widest uppercase flex items-center gap-3">
                                 <span className="w-1 h-1 rounded-full bg-accent" />
                                 Narrative Craft
@@ -129,8 +164,8 @@ export default function IntroStatement() {
                                 <span className="text-accent mr-3">◧</span>
                                 Exploring Sequence 02 — Work Index
                             </p>
-                            <span className="font-pixel text-[9px] text-ink-faint tracking-widest">
-                                (EST. 2026)
+                            <span className="font-pixel text-[9px] text-ink-faint tracking-widest uppercase">
+                                Visual Studio / 2026
                             </span>
                         </div>
                     </motion.div>
