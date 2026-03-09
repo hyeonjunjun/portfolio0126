@@ -64,10 +64,11 @@ export default function RootLayout({
         <TacticalCursor />
         <GlobalNav />
 
-        {/* Layer 1: Sensor Grid Overlay */}
-        <div className="fixed inset-0 pointer-events-none z-10 bg-sensor-grid mix-blend-overlay" />
-
-
+        {/* Layer 1: Cinematic Film Grain */}
+        <div
+          className="fixed inset-0 pointer-events-none z-10 opacity-[0.03] mix-blend-overlay"
+          style={{ backgroundImage: 'url("/images/noise.png")', backgroundRepeat: 'repeat' }}
+        />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>

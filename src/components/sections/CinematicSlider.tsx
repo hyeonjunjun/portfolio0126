@@ -99,12 +99,12 @@ export default function CinematicSlider() {
                         />
                     </div>
 
-                    <div className="relative z-10 flex flex-col items-center text-center">
-                        <h1 className="font-display font-black text-[clamp(6rem,15vw,20rem)] uppercase leading-none tracking-tighter text-outline-solid">
+                    <div className="relative z-10 flex flex-col items-center text-center px-4 w-full">
+                        <h1 className="font-display font-black text-[clamp(4rem,12vw,18rem)] uppercase leading-[0.85] tracking-tighter text-white drop-shadow-2xl">
                             <TextDecrypt text="RYAN JUN" speed={15} duration={150} />
                         </h1>
-                        <p className="font-mono text-[10px] sm:text-[12px] tracking-[0.3em] uppercase opacity-70 mt-4">
-                            Design Engineer / Neural Urbanism
+                        <p className="font-mono text-[9px] sm:text-[11px] font-bold tracking-[0.4em] uppercase text-white/60 mt-6 sm:mt-10 max-w-sm">
+                            Design Engineer // Cinematic Minimalism
                         </p>
                     </div>
                 </motion.div>
@@ -165,13 +165,18 @@ export default function CinematicSlider() {
                     />
                 </div>
 
-                <div className="relative z-10 flex flex-col items-center text-center text-white mix-blend-difference">
-                    <h2 className="font-display font-black text-[clamp(4rem,10vw,14rem)] uppercase leading-[0.8] tracking-tighter">
+                {/* Darken overlay for better text legibility */}
+                <div className="absolute inset-0 z-0 bg-black/40 transition-colors duration-700 ease-out" />
+
+                <div className="relative z-10 flex flex-col items-center text-center text-white px-4 md:px-12 w-full">
+                    <h2 className="font-display font-black text-[clamp(3.5rem,10vw,14rem)] uppercase leading-[0.85] tracking-tighter drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] pb-2 max-w-[90vw] whitespace-normal sm:whitespace-nowrap overflow-visible">
                         <TextDecrypt text={project.title} speed={10} duration={100} />
                     </h2>
-                    <p className="font-mono text-[10px] sm:text-[12px] tracking-[0.3em] uppercase opacity-70 mt-6">
-                        {project.client} // {project.sector}
-                    </p>
+                    <div className="flex items-center justify-center gap-4 font-mono text-[9px] sm:text-[11px] font-bold tracking-[0.4em] uppercase text-white/60 mt-6 sm:mt-10 overflow-hidden">
+                        <span>{project.client}</span>
+                        <span className="w-1 h-1 bg-white/40 rounded-full" />
+                        <span>{project.sector}</span>
+                    </div>
                 </div>
             </motion.div>
         );

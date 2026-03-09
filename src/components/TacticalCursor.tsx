@@ -44,11 +44,11 @@ export default function TacticalCursor() {
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
                 {/* Center Dot */}
-                <div className="w-[2px] h-[2px] bg-[#00FF41]" />
+                <div className="w-[2px] h-[2px] bg-white/80" />
 
                 {/* Crosshairs */}
-                <div className="absolute w-[12px] h-[1px] bg-[#00FF41]" />
-                <div className="absolute w-[1px] h-[12px] bg-[#00FF41]" />
+                <div className="absolute w-[12px] h-[1px] bg-white/80" />
+                <div className="absolute w-[1px] h-[12px] bg-white/80" />
             </motion.div>
         </motion.div>
     );
