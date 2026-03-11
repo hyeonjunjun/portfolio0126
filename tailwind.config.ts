@@ -9,27 +9,25 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        canvas: "#faf9f7",
-        ink: "#0a0a0a",
-        "ink-muted": "#555555",
-        "ink-faint": "#999999",
-        border: "#e0e0e0",
-        accent: "#8B9E6B",
-        "accent-muted": "#A3B585",
+        bg: "#0a0a0a",
+        surface: "#141414",
+        border: "#2a2a2a",
+        text: "#e8e5e0",
+        "text-dim": "#8a8378",
+        gold: "#c4a265",
+        blue: "#3d5a80",
+        terracotta: "#e07a5f",
       },
       fontFamily: {
-        display: ["var(--font-display)", "Georgia", "serif"],
-        sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
-        mono: ["var(--font-geist-mono)", "monospace"],
-        pixel: ["var(--font-pixel)", "monospace"],
-        dot: ["var(--font-dot)", "sans-serif"],
+        serif: ["var(--font-serif)", "Georgia", "serif"],
+        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "monospace"],
       },
-      /* ─── 12-Column Grid System ─── */
       gridTemplateColumns: {
         layout: "repeat(12, 1fr)",
       },
       gap: {
-        gutter: "1rem",   /* 16px gutter */
+        gutter: "1rem",
       },
       maxWidth: {
         grid: "1440px",
@@ -46,15 +44,9 @@ const config: Config = {
           "2xl": "1440px",
         },
       },
-      borderRadius: {
-        lg: "0.625rem",
-        md: "0.425rem",
-        sm: "0.225rem",
-      },
     },
   },
   plugins: [],
 };
 
 export default config;
-

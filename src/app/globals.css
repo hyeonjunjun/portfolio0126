@@ -1,51 +1,47 @@
 @import "tailwindcss";
 
-/* ─── HKJ Studio · Komorebi ─── */
+/* ─── HKJ Studio · Portfolio ─── */
 
 :root {
-  --font-display: var(--font-geist-sans);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-pixel: var(--font-pixel);
-  --font-dot: var(--font-dot);
+  /* Typography */
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), "Courier New", monospace;
 
-  /* Neural Urbanism Palette */
-  --color-canvas: #050505;
-  --color-ink: #F0F0F2;
-  --color-ink-muted: #666666;
-  --color-ink-faint: #A3A3A3;
-  --color-border: #111111;
-  --color-tactical-primary: #A1FFCE;
-  /* Muted CRT Green */
-  --color-tactical-secondary: #FF3366;
-  --color-tactical-accent: #FFB000;
-  --color-subtle: #0A0A0A;
+  /* Colors */
+  --color-bg: #0a0a0a;
+  --color-surface: #141414;
+  --color-border: #2a2a2a;
+  --color-text: #e8e5e0;
+  --color-text-dim: #8a8378;
+  --color-gold: #c4a265;
+  --color-blue: #3d5a80;
+  --color-terracotta: #e07a5f;
+
+  /* Fluid Type Scale */
+  --text-xs: clamp(0.625rem, 0.6rem + 0.125vw, 0.75rem);
+  --text-sm: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-base: clamp(0.875rem, 0.8rem + 0.375vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.5rem);
+  --text-xl: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem);
+  --text-2xl: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
+  --text-3xl: clamp(2.5rem, 1.8rem + 3.5vw, 5rem);
+  --text-display: clamp(3rem, 2rem + 5vw, 8rem);
 }
 
 /* ─── Base ─── */
 
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-}
-
 body {
-  background-color: var(--color-canvas);
-  color: var(--color-ink);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Hide cursor globally (Tactical Cursor replaces it) */
-* {
-  cursor: none !important;
-}
-
 ::selection {
-  background-color: var(--color-ink);
-  color: var(--color-canvas);
+  background-color: var(--color-gold);
+  color: var(--color-bg);
 }
 
 /* ─── Utilities ─── */
@@ -55,152 +51,56 @@ body {
     text-wrap: balance;
   }
 
-  .font-display {
-    font-family: var(--font-display), Georgia, serif;
+  .font-serif {
+    font-family: var(--font-serif);
   }
 
-  .font-pixel {
-    font-family: var(--font-pixel), monospace;
-    image-rendering: pixelated;
-    -webkit-font-smoothing: none;
-    -moz-osx-font-smoothing: auto;
-  }
-
-  .font-dot {
-    font-family: var(--font-dot), sans-serif;
-  }
-
-  .glass {
-    background: rgba(250, 249, 247, 0.4);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(10, 10, 10, 0.05);
-  }
-
-  .dot-matrix {
-    background-image: radial-gradient(rgba(10, 10, 10, 0.1) 1px, transparent 0);
-    background-size: 8px 8px;
+  .font-mono {
+    font-family: var(--font-mono);
   }
 }
 
-/* ─── Cinematic Entrances ─── */
+/* ─── Film Grain ─── */
 
-@keyframes reveal-up {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
+@keyframes grain {
+  0%,
+  100% {
+    transform: translate(0, 0);
   }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  10% {
+    transform: translate(-5%, -5%);
   }
-}
-
-@keyframes reveal-clip {
-  from {
-    clip-path: inset(100% 0 0 0);
+  30% {
+    transform: translate(5%, -10%);
   }
-
-  to {
-    clip-path: inset(0 0 0 0);
+  50% {
+    transform: translate(-10%, 5%);
   }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
+  70% {
+    transform: translate(0, 10%);
   }
-
-  to {
-    opacity: 1;
+  90% {
+    transform: translate(10%, 5%);
   }
 }
 
-.animate-reveal-up {
-  animation: reveal-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+.film-grain {
+  animation: grain 0.8s steps(4) infinite;
 }
 
-.animate-reveal-clip {
-  animation: reveal-clip 1s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
+/* ─── Reduced Motion ─── */
 
-.animate-fade-in {
-  animation: fade-in 0.6s ease both;
-}
-
-/* Stagger delay utilities */
-.delay-100 {
-  animation-delay: 100ms;
-}
-
-.delay-200 {
-  animation-delay: 200ms;
-}
-
-.delay-300 {
-  animation-delay: 300ms;
-}
-
-.delay-400 {
-  animation-delay: 400ms;
-}
-
-.delay-500 {
-  animation-delay: 500ms;
-}
-
-.delay-600 {
-  animation-delay: 600ms;
-}
-
-.delay-700 {
-  animation-delay: 700ms;
-}
-
-.delay-800 {
-  animation-delay: 800ms;
-}
-
-/* ─── Marquee (Philosophy Strip) ─── */
-
-@keyframes marquee {
-  from {
-    transform: translateX(0);
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 
-  to {
-    transform: translateX(-100%);
+  .film-grain {
+    animation: none;
   }
-}
-
-.animate-marquee {
-  animation: marquee 30s linear infinite;
-}
-
-.animate-marquee-paused {
-  animation-play-state: paused;
-}
-
-/* ─── Line Scroll (Work Index Dividers) ─── */
-
-@keyframes line-scroll {
-  from {
-    background-position: 0 0;
-  }
-
-  to {
-    background-position: 200px 0;
-  }
-}
-
-.animate-line-scroll {
-  background: repeating-linear-gradient(90deg,
-      var(--color-ink) 0px,
-      var(--color-ink) 8px,
-      transparent 8px,
-      transparent 16px);
-  background-size: 200px 1px;
-  height: 1px;
-  animation: line-scroll 8s linear infinite;
 }

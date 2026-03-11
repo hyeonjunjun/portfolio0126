@@ -81,7 +81,7 @@ const fragmentShader = `
     
     // Atmospheric Falloff
     float glow = smoothstep(0.6, 0.0, dist);
-    vec3 auraColor = vec3(0.54, 0.62, 0.42); // Sage Glow (#8b9e6b)
+    vec3 auraColor = vec3(0.77, 0.64, 0.40); // Gold Glow (#C4A265)
     
     // Chromatic weight and subtle flicker
     finalColor = mix(finalColor, auraColor, glow * 0.16 * (1.0 + n * 0.15));

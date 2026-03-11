@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Geist, Geist_Mono, Silkscreen, DotGothic16 } from "next/font/google";
+import { Playfair_Display, DM_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import CurtainPreloader from "@/components/CurtainPreloader";
@@ -8,44 +8,33 @@ import GlobalNav from "@/components/GlobalNav";
 
 /* ─── Typography ─── */
 
-const inter = Inter({
+const playfair = Playfair_Display({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-display",
+  variable: "--font-playfair",
 });
 
-const geistSans = Geist({
+const dmSans = DM_Sans({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-geist-sans",
+  variable: "--font-dm-sans",
 });
 
-const geistMono = Geist_Mono({
+const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-geist-mono",
-});
-
-const silkscreen = Silkscreen({
-  weight: ["400", "700"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-pixel",
-});
-
-const dotGothic = DotGothic16({
-  weight: "400",
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-dot",
+  variable: "--font-jetbrains",
 });
 
 /* ─── Metadata ─── */
 
 export const metadata: Metadata = {
-  title: "HKJ Studio",
+  title: {
+    default: "HKJ Studio — Ryan Jun",
+    template: "%s | HKJ Studio",
+  },
   description:
-    "HKJ Studio — Portfolio of Ryan Jun. Design engineering at the intersection of high-fidelity craft and deep systems thinking.",
+    "Design engineering at the intersection of high-fidelity craft and deep systems thinking.",
 };
 
 /* ─── Root Layout ─── */
@@ -58,17 +47,25 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${geistSans.variable} ${geistMono.variable} ${silkscreen.variable} ${dotGothic.variable} antialiased bg-canvas text-ink`}
+        className={`${playfair.variable} ${dmSans.variable} ${jetbrains.variable} antialiased`}
+        style={{
+          backgroundColor: "var(--color-bg)",
+          color: "var(--color-text)",
+        }}
       >
         <CurtainPreloader />
         <TacticalCursor />
         <GlobalNav />
 
-        {/* Layer 1: Cinematic Film Grain */}
+        {/* Film Grain Overlay */}
         <div
-          className="fixed inset-0 pointer-events-none z-10 opacity-[0.03] mix-blend-overlay"
-          style={{ backgroundImage: 'url("/images/noise.png")', backgroundRepeat: 'repeat' }}
+          className="fixed inset-0 pointer-events-none z-10 opacity-[0.04] mix-blend-overlay film-grain"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
+            backgroundRepeat: "repeat",
+          }}
         />
+
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>
