@@ -6,7 +6,6 @@ import Cursor from "@/components/Cursor";
 import GlobalNav from "@/components/GlobalNav";
 import StudioPreloader from "@/components/StudioPreloader";
 import TransitionOverlay from "@/components/TransitionOverlay";
-import AboutOverlay from "@/components/AboutOverlay";
 import ContactOverlay from "@/components/ContactOverlay";
 
 /* ── Fonts ── */
@@ -78,7 +77,6 @@ export default function RootLayout({
         <Cursor />
         <GlobalNav />
         <TransitionOverlay />
-        <AboutOverlay />
         <ContactOverlay />
 
         {/* Black body frame */}
